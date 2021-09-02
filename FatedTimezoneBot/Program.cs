@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace FatedTimezoneBot
 {
@@ -18,9 +19,10 @@ namespace FatedTimezoneBot
         Regex IsTime = new Regex("((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))");
 
 		public static void Main(string[] args)
-			=> new Program().MainAsync("token.txt", "sample.json").GetAwaiter().GetResult();
+    		=> new Program().MainAsync(args[0], args[1]).GetAwaiter().GetResult();
 
-		public async Task MainAsync(string tokenFile, string playerFile)
+
+        public async Task MainAsync(string tokenFile, string playerFile)
 		{
             // Set up the mappings of user to time zone.
             ICollection<TimeZoneInfo> timeZones = TimeZoneInfo.GetSystemTimeZones();
@@ -107,14 +109,17 @@ namespace FatedTimezoneBot
             userTime.AddMinutes(userMinutes);
 
             EmbedBuilder eb = new EmbedBuilder();
+            StringBuilder sb = new StringBuilder();
 
             foreach (KeyValuePair<TimeZoneInfo, string> displayer in this.displayMappings)
             {
+                
                 DateTime local = TimeZoneInfo.ConvertTime(userTime, tz, displayer.Key);
-                eb.AddField(displayer.Value, local.ToShortTimeString());
+                sb.AppendLine($"**{displayer.Value}** - {local.ToShortTimeString()}");
             }
 
-            await message.Channel.SendMessageAsync("", false, eb.Build());
+            eb.Description = sb.ToString();
+            await message.Channel.SendMessageAsync("Local times for everyone", false, eb.Build());
         }
 
         private Task Log(LogMessage msg)
