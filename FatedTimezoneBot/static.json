@@ -1,0 +1,11 @@
+{
+"players":[    
+    {"username":"DaktCole#3699", "timezoneid":"Pacific Standard Time", "displayname":"Dakt"},
+	{"username":"Moon Kin#5475", "timezoneid":"Pacific Standard Time", "displayname":"Moon"}, 
+	{"username":"teddybearrulz#7869", "timezoneid":"Pacific Standard Time", "displayname":"Lil"}, 	
+	{"username":"zynclori#7710", "timezoneid":"E. Australia Standard Time", "displayname":"Yuli"}, 
+    {"username":"Valk#8198", "timezoneid":"Central Standard Time", "displayname":"Valk"}, 	
+    {"username":"SageOfEden#8978", "timezoneid":"Eastern Standard Time", "displayname":"Cicero"}, 	
+    {"username":"Kothar#0192", "timezoneid":"Eastern Standard Time", "displayname":"Kothar"}, 	
+    {"username":"Aspen#7502", "timezoneid":"Eastern Standard Time", "displayname":"Allene"}	
+]}
