@@ -99,7 +99,10 @@ namespace FatedTimezoneBot
 
             if (0 == string.Compare(userMeridian, "pm", StringComparison.OrdinalIgnoreCase))
             {
-                userHour += 12;
+                if (userHour != 12)
+                {
+                    userHour += 12;
+                }
             }
 
             DateTime userTimeToday = DateTime.Today;
@@ -119,7 +122,7 @@ namespace FatedTimezoneBot
             }
 
             eb.Description = sb.ToString();
-            await message.Channel.SendMessageAsync("Local times for everyone", false, eb.Build());
+            await message.Channel.SendMessageAsync("", false, eb.Build());
         }
 
         private Task Log(LogMessage msg)
