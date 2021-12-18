@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FatedTimezoneBot": {
+      "commandName": "Project",
+      "commandLineArgs": "token.txt static.json"
+    }
+  }
+}
