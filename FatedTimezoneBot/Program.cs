@@ -44,8 +44,6 @@ namespace FatedTimezoneBot
                 }
             }
 
-            // Set up the display mappings
-
             _client = new DiscordSocketClient();
 
             _client.Log += Log;
@@ -68,17 +66,21 @@ namespace FatedTimezoneBot
 
         private async Task _client_MessageReceived(SocketMessage message)
         {
+            // Short circuit bots
             if (message.Author.IsBot)
             {
                 return;
             }
 
+            // Determine if there was a match.
             MatchCollection mc = IsTime.Matches(message.Content);
             if (mc.Count == 0)
             {
                 return;
             }
 
+            // If there are multiple times matched, we just pick the first.  Could do th is in 
+            // a loop if we wanted to be robust.
             if (mc[0].Groups.Count < 5)
             {
                 return;
@@ -94,10 +96,12 @@ namespace FatedTimezoneBot
                 return;
             }
 
+            // Parse out the entered time.
             int userHour = int.Parse(mc[0].Groups[2].Value);
             int userMinutes = int.Parse(mc[0].Groups[3].Value);
             string userMeridian = mc[0].Groups[4].Value;
 
+            // Deal with wierdness around am/pm
             if (0 == string.Compare(userMeridian, "pm", StringComparison.OrdinalIgnoreCase))
             {
                 if (userHour != 12)
@@ -105,7 +109,16 @@ namespace FatedTimezoneBot
                     userHour += 12;
                 }
             }
+            else
+            {
+                if (userHour == 12)
+                {
+                    userHour = 0;
+                }
+            }
 
+            // Bit of a hack to deal with the c# time system.  Time zones/daylight savings time are dependent on date, so just
+            // assume today's date.
             DateTime userTimeToday = DateTime.Today;
             DateTime userTime = new DateTime(userTimeToday.Year, userTimeToday.Month, userTimeToday.Day, userHour, userMinutes, 0);
 
@@ -115,9 +128,9 @@ namespace FatedTimezoneBot
             EmbedBuilder eb = new EmbedBuilder();
             StringBuilder sb = new StringBuilder();
 
+            // Cycle through every group and print out the appropriate time for them.
             foreach (KeyValuePair<TimeZoneInfo, string> displayer in this.displayMappings)
-            {
-                
+            {             
                 DateTime local = TimeZoneInfo.ConvertTime(userTime, tz, displayer.Key);
                 sb.AppendLine($"**{displayer.Value}** - {local.ToShortTimeString()}");
             }
