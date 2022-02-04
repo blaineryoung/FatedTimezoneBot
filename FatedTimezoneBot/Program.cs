@@ -14,22 +14,25 @@ namespace FatedTimezoneBot
     {
 		private DiscordSocketClient _client;
 
+        ICollection<TimeZoneInfo> TimeZones;
         Dictionary<string, TimeZoneInfo> timeZoneMappings = new Dictionary<string, TimeZoneInfo>();
         Dictionary<TimeZoneInfo, string> displayMappings = new Dictionary<TimeZoneInfo, string>();
+        IEnumerable<Raid> raids; 
 
-        Regex IsTime = new Regex("((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))");
+        Regex IsTime = new Regex("((1[0-2]|0?[1-9]):([0-5][0-9])\\s*?([AaPp][Mm]))");
+        const string RaidTimesCommand = "!raidtime";
 
-		public static void Main(string[] args)
-    		=> new Program().MainAsync(args[0], args[1]).GetAwaiter().GetResult();
+        public static void Main(string[] args)
+    		=> new Program().MainAsync(args[0], args[1], args[2]).GetAwaiter().GetResult();
 
 
-        public async Task MainAsync(string tokenFile, string playerFile)
+        public async Task MainAsync(string tokenFile, string playerFile, string raidFile)
 		{
             // Set up the mappings of user to time zone.
-            ICollection<TimeZoneInfo> timeZones = TimeZoneInfo.GetSystemTimeZones();
+            TimeZones = TimeZoneInfo.GetSystemTimeZones();
             foreach (Player staticMember in await PlayerList.LoadPlayerFile(playerFile))
             {
-                TimeZoneInfo timeZone = timeZones.Where(x => 0 == string.Compare(x.Id, staticMember.timezoneid)).First();
+                TimeZoneInfo timeZone = TimeZones.Where(x => 0 == string.Compare(x.Id, staticMember.timezoneid)).First();
                 timeZoneMappings.Add(staticMember.username, timeZone);
 
                 if (displayMappings.ContainsKey(timeZone))
@@ -43,6 +46,8 @@ namespace FatedTimezoneBot
                     displayMappings.Add(timeZone, staticMember.displayname);
                 }
             }
+
+            raids = await RaidInfo.LoadRaidFile(raidFile);
 
             _client = new DiscordSocketClient();
 
@@ -74,18 +79,46 @@ namespace FatedTimezoneBot
 
             // Determine if there was a match.
             MatchCollection mc = IsTime.Matches(message.Content);
-            if (mc.Count == 0)
+            try
             {
-                return;
+                if (mc.Count != 0)
+                {
+                    await HandleTime(message);
+                }
+                if (message.Content.Contains(RaidTimesCommand, StringComparison.OrdinalIgnoreCase))
+                {
+                    await HandleRaid(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        private async Task HandleRaid(SocketMessage message)
+        {
+            StringBuilder raidTimes = new StringBuilder();
+
+            foreach (Raid r in this.raids)
+            {
+                raidTimes.AppendLine(r.day);
+                DateTime raidTime = this.GetTimeFromText(r.time);
+                TimeZoneInfo timeZone = TimeZones.Where(x => 0 == string.Compare(x.Id, r.timezoneid)).First();
+
+                StringBuilder sb = this.PrintUserTimes(raidTime, timeZone, this.displayMappings);
+
+                raidTimes.Append(sb.ToString());
+                raidTimes.AppendLine();
             }
 
-            // If there are multiple times matched, we just pick the first.  Could do th is in 
-            // a loop if we wanted to be robust.
-            if (mc[0].Groups.Count < 5)
-            {
-                return;
-            }
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.Description = raidTimes.ToString();
+            await message.Channel.SendMessageAsync("", false, eb.Build());
+        }
 
+        private async Task HandleTime(SocketMessage message)
+        {
             string distinctUsername = $"{message.Author.Username}#{message.Author.Discriminator}";
 
             // Get the time zone for the user
@@ -94,6 +127,32 @@ namespace FatedTimezoneBot
             {
                 Console.WriteLine($"User {distinctUsername} not found");
                 return;
+            }
+
+            DateTime userTime = this.GetTimeFromText(message.Content);
+
+
+            EmbedBuilder eb = new EmbedBuilder();
+            StringBuilder sb = this.PrintUserTimes(userTime, tz, this.displayMappings);
+
+            eb.Description = sb.ToString();
+            await message.Channel.SendMessageAsync("", false, eb.Build());
+        }
+
+        private DateTime GetTimeFromText(string timeString)
+        {
+            // Determine if there was a match.
+            MatchCollection mc = IsTime.Matches(timeString);
+            if (mc.Count == 0)
+            {
+                throw new InvalidDataException($"{timeString} is not a valid time");
+            }
+
+            // If there are multiple times matched, we just pick the first.  Could do th is in 
+            // a loop if we wanted to be robust.
+            if (mc[0].Groups.Count < 5)
+            {
+                throw new InvalidDataException($"{timeString} is not a valid time");
             }
 
             // Parse out the entered time.
@@ -125,18 +184,21 @@ namespace FatedTimezoneBot
             userTime.AddHours(userHour);
             userTime.AddMinutes(userMinutes);
 
-            EmbedBuilder eb = new EmbedBuilder();
+            return userTime;
+        }
+
+        private StringBuilder PrintUserTimes(DateTime sourceTime, TimeZoneInfo sourceTimeZone, Dictionary<TimeZoneInfo, string> displayMappings)
+        {
             StringBuilder sb = new StringBuilder();
 
             // Cycle through every group and print out the appropriate time for them.
             foreach (KeyValuePair<TimeZoneInfo, string> displayer in this.displayMappings)
-            {             
-                DateTime local = TimeZoneInfo.ConvertTime(userTime, tz, displayer.Key);
+            {
+                DateTime local = TimeZoneInfo.ConvertTime(sourceTime, sourceTimeZone, displayer.Key);
                 sb.AppendLine($"**{displayer.Value}** - {local.ToShortTimeString()}");
             }
 
-            eb.Description = sb.ToString();
-            await message.Channel.SendMessageAsync("", false, eb.Build());
+            return sb;
         }
 
         private Task Log(LogMessage msg)

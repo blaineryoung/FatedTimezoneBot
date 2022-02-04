@@ -1,0 +1,13 @@
+﻿{
+"raids":[
+  {
+    "day": "Saturday",
+    "timezoneid": "Pacific Standard Time",
+    "time": "9:00 pm"
+  },
+  {
+    "day": "Sunday",
+    "timezoneid": "Pacific Standard Time",
+    "time": "5:00 pm"
+  }
+]}
