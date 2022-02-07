@@ -85,6 +85,7 @@ namespace FatedTimezoneBot
                 if (mc.Count != 0)
                 {
                     await HandleTime(message);
+                    return;
                 }
                 if (message.Content.Contains(RaidTimesCommand, StringComparison.OrdinalIgnoreCase))
                 {
