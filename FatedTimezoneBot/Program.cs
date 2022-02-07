@@ -20,6 +20,7 @@ namespace FatedTimezoneBot
         IEnumerable<Raid> raids; 
 
         Regex IsTime = new Regex("((1[0-2]|0?[1-9]):?([0-5][0-9])?\\s*?([AaPp][Mm]))");
+        Regex MaybeTime = new Regex("(at\\s*?(1[0-2]|0?[1-9]):?([0-5][0-9])?)");
         const string RaidTimesCommand = "!raidtime";
 
         public static void Main(string[] args)
@@ -89,6 +90,12 @@ namespace FatedTimezoneBot
                 {
                     await HandleRaid(message);
                 }
+
+                mc = MaybeTime.Matches(message.Content);
+                if (mc.Count != 0)
+                {
+                    await HandleTime(message);
+                }
             }
             catch (Exception ex)
             {
@@ -143,22 +150,37 @@ namespace FatedTimezoneBot
         {
             // Determine if there was a match.
             MatchCollection mc = IsTime.Matches(timeString);
-            if (mc.Count == 0)
+            MatchCollection mcMaybe = MaybeTime.Matches(timeString);
+            if (mc.Count == 0 && mcMaybe.Count == 0)
             {
                 throw new InvalidDataException($"{timeString} is not a valid time");
             }
 
             // If there are multiple times matched, we just pick the first.  Could do th is in 
             // a loop if we wanted to be robust.
-            if (mc[0].Groups.Count < 5)
-            {
-                throw new InvalidDataException($"{timeString} is not a valid time");
-            }
+            int userHour;
+            int userMinutes;
+            string userMeridian;
 
-            // Parse out the entered time.
-            int userHour = int.Parse(mc[0].Groups[2].Value);
-            int userMinutes = string.IsNullOrEmpty(mc[0].Groups[3].Value) ? 0 : int.Parse(mc[0].Groups[3].Value);
-            string userMeridian = mc[0].Groups[4].Value;
+            if (mc.Count != 0)
+            {
+                if (mc[0].Groups.Count < 5)
+                {
+                    throw new InvalidDataException($"{timeString} is not a valid time");
+                }
+
+                // Parse out the entered time.
+                userHour = int.Parse(mc[0].Groups[2].Value);
+                userMinutes = string.IsNullOrEmpty(mc[0].Groups[3].Value) ? 0 : int.Parse(mc[0].Groups[3].Value);
+                userMeridian = mc[0].Groups[4].Value;
+
+            }
+            else
+            {
+                userHour = int.Parse(mcMaybe[0].Groups[2].Value);
+                userMinutes = string.IsNullOrEmpty(mcMaybe[0].Groups[3].Value) ? 0 : int.Parse(mcMaybe[0].Groups[3].Value);
+                userMeridian = "pm";
+            }
 
             // Deal with wierdness around am/pm
             if (0 == string.Compare(userMeridian, "pm", StringComparison.OrdinalIgnoreCase))
