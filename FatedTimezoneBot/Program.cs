@@ -19,7 +19,7 @@ namespace FatedTimezoneBot
         Dictionary<TimeZoneInfo, string> displayMappings = new Dictionary<TimeZoneInfo, string>();
         IEnumerable<Raid> raids; 
 
-        Regex IsTime = new Regex("((1[0-2]|0?[1-9]):([0-5][0-9])\\s*?([AaPp][Mm]))");
+        Regex IsTime = new Regex("((1[0-2]|0?[1-9]):?([0-5][0-9])?\\s*?([AaPp][Mm]))");
         const string RaidTimesCommand = "!raidtime";
 
         public static void Main(string[] args)
@@ -157,7 +157,7 @@ namespace FatedTimezoneBot
 
             // Parse out the entered time.
             int userHour = int.Parse(mc[0].Groups[2].Value);
-            int userMinutes = int.Parse(mc[0].Groups[3].Value);
+            int userMinutes = string.IsNullOrEmpty(mc[0].Groups[3].Value) ? 0 : int.Parse(mc[0].Groups[3].Value);
             string userMeridian = mc[0].Groups[4].Value;
 
             // Deal with wierdness around am/pm
