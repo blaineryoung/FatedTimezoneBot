@@ -17,7 +17,7 @@ namespace FatedTimezoneBot
         ICollection<TimeZoneInfo> TimeZones;
         Dictionary<string, TimeZoneInfo> timeZoneMappings = new Dictionary<string, TimeZoneInfo>();
         Dictionary<TimeZoneInfo, string> displayMappings = new Dictionary<TimeZoneInfo, string>();
-        IEnumerable<Raid> raids; 
+        IEnumerable<Raid> raids;
 
         Regex IsTime = new Regex("((1[0-2]|0?[1-9]):?([0-5][0-9])?\\s*?([AaPp][Mm]))");
         Regex MaybeTime = new Regex("(at\\s*?(1[0-2]|0?[1-9]):?([0-5][0-9])?)");
@@ -106,12 +106,29 @@ namespace FatedTimezoneBot
         private async Task HandleRaid(SocketMessage message)
         {
             StringBuilder raidTimes = new StringBuilder();
+            TimeSpan nextRaid = TimeSpan.MaxValue;
 
             foreach (Raid r in this.raids)
             {
                 raidTimes.AppendLine(r.day);
                 DateTime raidTime = this.GetTimeFromText(r.time);
                 TimeZoneInfo timeZone = TimeZones.Where(x => 0 == string.Compare(x.Id, r.timezoneid)).First();
+
+                DayOfWeek raidDay;
+                if (false != Enum.TryParse<DayOfWeek>(r.day, out raidDay))
+                {
+                    int daysTillRaid = (7 - Math.Abs(raidDay - raidTime.DayOfWeek)) % 7;
+                    raidTime = raidTime.AddDays(daysTillRaid);
+
+                    DateTime utcRaidTime = TimeZoneInfo.ConvertTime(raidTime, timeZone, TimeZoneInfo.Utc);
+
+                    TimeSpan ts = utcRaidTime.Subtract(DateTime.UtcNow);
+
+                    if (nextRaid > ts)
+                    {
+                        nextRaid = ts;
+                    }
+                }         
 
                 StringBuilder sb = this.PrintUserTimes(raidTime, timeZone, this.displayMappings);
 
@@ -120,6 +137,29 @@ namespace FatedTimezoneBot
             }
 
             EmbedBuilder eb = new EmbedBuilder();
+
+            if (nextRaid < TimeSpan.MaxValue)
+            {
+                String timeTillRaid = String.Empty;
+                if (0 != nextRaid.Days)
+                {
+                    timeTillRaid = $"{nextRaid.Days} days, {nextRaid.Hours} hours, {nextRaid.Minutes} minutes";
+                }
+                else if (0 != nextRaid.Hours)
+                {
+                    timeTillRaid = $"{nextRaid.Hours} hours, {nextRaid.Minutes} minutes";
+                }
+                else if(0 != nextRaid.Minutes)
+                {
+                    timeTillRaid = $"{nextRaid.Minutes} minutes";
+                }
+                else
+                {
+                    timeTillRaid = "NOW!";
+                }
+                raidTimes.AppendLine($"Next raid is in **{timeTillRaid}**");
+            }
+                    
             eb.Description = raidTimes.ToString();
             await message.Channel.SendMessageAsync("", false, eb.Build());
         }
@@ -217,7 +257,14 @@ namespace FatedTimezoneBot
             foreach (KeyValuePair<TimeZoneInfo, string> displayer in this.displayMappings)
             {
                 DateTime local = TimeZoneInfo.ConvertTime(sourceTime, sourceTimeZone, displayer.Key);
-                sb.AppendLine($"**{displayer.Value}** - {local.ToShortTimeString()}");
+                if (local.DayOfWeek == sourceTime.DayOfWeek)
+                {
+                    sb.AppendLine($"**{displayer.Value}** - {local.ToShortTimeString()}");
+                }
+                else
+                {
+                    sb.AppendLine($"**{displayer.Value}** - {local.ToShortTimeString()} ({local.DayOfWeek})");
+                }
             }
 
             return sb;
