@@ -112,8 +112,9 @@ namespace FatedTimezoneBot
             foreach (Raid r in this.raids)
             {
                 raidTimes.AppendLine(r.day);
-                DateTime raidTime = this.GetTimeFromText(r.time);
+                
                 TimeZoneInfo timeZone = TimeZones.Where(x => 0 == string.Compare(x.Id, r.timezoneid)).First();
+                DateTime raidTime = this.GetTimeFromText(r.time, timeZone);
 
                 DayOfWeek raidDay;
                 if (false != Enum.TryParse<DayOfWeek>(r.day, out raidDay))
@@ -177,7 +178,7 @@ namespace FatedTimezoneBot
                 return;
             }
 
-            DateTime userTime = this.GetTimeFromText(message.Content);
+            DateTime userTime = this.GetTimeFromText(message.Content, tz);
 
 
             EmbedBuilder eb = new EmbedBuilder();
@@ -187,7 +188,7 @@ namespace FatedTimezoneBot
             await message.Channel.SendMessageAsync("", false, eb.Build());
         }
 
-        private DateTime GetTimeFromText(string timeString)
+        private DateTime GetTimeFromText(string timeString, TimeZoneInfo sourceTimeZone)
         {
             // Determine if there was a match.
             MatchCollection mc = IsTime.Matches(timeString);
@@ -241,7 +242,7 @@ namespace FatedTimezoneBot
 
             // Bit of a hack to deal with the c# time system.  Time zones/daylight savings time are dependent on date, so just
             // assume today's date.
-            DateTime userTimeToday = DateTime.Today;
+            DateTime userTimeToday = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.Utc, sourceTimeZone);
             DateTime userTime = new DateTime(userTimeToday.Year, userTimeToday.Month, userTimeToday.Day, userHour, userMinutes, 0);
 
             userTime.AddHours(userHour);
