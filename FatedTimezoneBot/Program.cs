@@ -117,7 +117,7 @@ namespace FatedTimezoneBot
                 DayOfWeek raidDay;
                 if (false != Enum.TryParse<DayOfWeek>(r.day, out raidDay))
                 {
-                    int daysTillRaid = (7 - Math.Abs(raidDay - raidTime.DayOfWeek)) % 7;
+                    int daysTillRaid = raidDay >= raidTime.DayOfWeek ? (raidDay - raidTime.DayOfWeek) : (7 - (int)raidTime.DayOfWeek + (int)raidDay);
                     raidTime = raidTime.AddDays(daysTillRaid);
 
                     DateTime utcRaidTime = TimeZoneInfo.ConvertTime(raidTime, timeZone, TimeZoneInfo.Utc);
