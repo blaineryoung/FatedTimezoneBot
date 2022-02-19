@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Dispatcher
 {
-    internal interface ICommandHandler
+    public interface ICommandHandler
     {
         /// <summary>
         /// Processes the message
