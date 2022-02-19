@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.IO;
+using FatedTimezoneBot.Discord;
 
 namespace FatedTimezoneBot
 {
@@ -50,30 +51,22 @@ namespace FatedTimezoneBot
 
             raids = await RaidInfo.LoadRaidFile(raidFile);
 
-            _client = new DiscordSocketClient();
-
-            _client.Log += Log;
 
             var token = File.ReadAllText(tokenFile);
 
-            await _client.LoginAsync(TokenType.Bot, token);
-            await _client.StartAsync();
+            FatedTimezoneBot.Discord.IDiscordClient client = new DiscordClient(token);
+            await client.Connect();
 
-            _client.MessageReceived += _client_MessageReceived;
-            _client.Ready += () =>
-            {
-                Console.WriteLine("Bot is connected!");
-                return Task.CompletedTask;
-            };
+            client.MessageReceived += _client_MessageReceived;
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
         }
 
-        private async Task _client_MessageReceived(SocketMessage message)
+        private async Task _client_MessageReceived(IDiscordMessage message)
         {
             // Short circuit bots
-            if (message.Author.IsBot)
+            if (message.IsBot)
             {
                 return;
             }
@@ -104,7 +97,7 @@ namespace FatedTimezoneBot
             }
         }
 
-        private async Task HandleRaid(SocketMessage message)
+        private async Task HandleRaid(IDiscordMessage message)
         {
             StringBuilder raidTimes = new StringBuilder();
             TimeSpan nextRaid = TimeSpan.MaxValue;
@@ -138,8 +131,6 @@ namespace FatedTimezoneBot
                 raidTimes.AppendLine();
             }
 
-            EmbedBuilder eb = new EmbedBuilder();
-
             if (nextRaid < TimeSpan.MaxValue)
             {
                 String timeTillRaid = String.Empty;
@@ -160,32 +151,26 @@ namespace FatedTimezoneBot
                     timeTillRaid = "NOW!";
                 }
                 raidTimes.AppendLine($"Next raid is in **{timeTillRaid}**");
-            }
-                    
-            eb.Description = raidTimes.ToString();
-            await message.Channel.SendMessageAsync("", false, eb.Build());
+            }        
+
+            await message.SendEmbededMessageAsync(raidTimes.ToString());
         }
 
-        private async Task HandleTime(SocketMessage message)
+        private async Task HandleTime(IDiscordMessage message)
         {
-            string distinctUsername = $"{message.Author.Username}#{message.Author.Discriminator}";
-
             // Get the time zone for the user
             TimeZoneInfo tz;
-            if (false == timeZoneMappings.TryGetValue(distinctUsername, out tz))
+            if (false == timeZoneMappings.TryGetValue(message.UserName, out tz))
             {
-                Console.WriteLine($"User {distinctUsername} not found");
+                Console.WriteLine($"User {message.UserName} not found");
                 return;
             }
 
             DateTime userTime = this.GetTimeFromText(message.Content, tz);
 
-
-            EmbedBuilder eb = new EmbedBuilder();
             StringBuilder sb = this.PrintUserTimes(userTime, tz, this.displayMappings);
 
-            eb.Description = sb.ToString();
-            await message.Channel.SendMessageAsync("", false, eb.Build());
+            await message.SendEmbededMessageAsync(sb.ToString());
         }
 
         private DateTime GetTimeFromText(string timeString, TimeZoneInfo sourceTimeZone)
