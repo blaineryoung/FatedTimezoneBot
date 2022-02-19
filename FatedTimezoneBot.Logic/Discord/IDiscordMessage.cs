@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FatedTimezoneBot.Discord
+namespace FatedTimezoneBot.Logic.Discord
 {
     public interface IDiscordMessage
     {
+        ulong ChannelId { get; }
+
         bool IsBot { get; }
 
         string UserName { get; }

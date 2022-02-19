@@ -26,4 +26,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Information\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FatedTimezoneBot.Logic\FatedTimezoneBot.Logic.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.IO;
-using FatedTimezoneBot.Discord;
+using FatedTimezoneBot.Logic.Discord;
+using FatedTimezoneBot.Logic.Information;
+using FatedTimezoneBot.Logic.Information.Serializers;
 
 namespace FatedTimezoneBot
 {
@@ -54,7 +56,7 @@ namespace FatedTimezoneBot
 
             var token = File.ReadAllText(tokenFile);
 
-            FatedTimezoneBot.Discord.IDiscordClient client = new DiscordClient(token);
+            FatedTimezoneBot.Logic.Discord.IDiscordClient client = new DiscordClient(token);
             await client.Connect();
 
             client.MessageReceived += _client_MessageReceived;

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FatedTimezoneBot.Discord
+namespace FatedTimezoneBot.Logic.Discord
 {
     public class DiscordClient : IDiscordClient
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FatedTimezoneBot.Discord
+namespace FatedTimezoneBot.Logic.Discord
 {
     internal class DiscordSocketMessage : IDiscordMessage
     {
@@ -22,6 +22,8 @@ namespace FatedTimezoneBot.Discord
         public string UserName => $"{_socketMessage.Author.Username}#{_socketMessage.Author.Discriminator}";
 
         public string Content => _socketMessage.Content;
+
+        public ulong ChannelId => _socketMessage.Channel.Id;
 
         public async Task SendEmbededMessageAsync(string message)
         {
