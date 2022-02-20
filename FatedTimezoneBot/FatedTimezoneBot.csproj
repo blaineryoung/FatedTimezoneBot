@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Information\**" />
+    <EmbeddedResource Remove="Information\**" />
+    <None Remove="Information\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="static.json" />
   </ItemGroup>
 
@@ -24,10 +30,6 @@
     <None Update="token.txt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Information\" />
   </ItemGroup>
 
   <ItemGroup>

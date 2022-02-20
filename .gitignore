@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /FatedTimezoneBot/creds.txt
+/FatedTimezoneBot.Logic/ChannelData/922197476230967318.json

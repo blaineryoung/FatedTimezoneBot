@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Discord
 {
-    public class DiscordClient : IDiscordClient
+    public class DiscordClient : IDiscordClientWrapper
     {
         private DiscordSocketClient _client;
         private string _token;
 
-        public event IDiscordClient.MessageReceivedHandler<IDiscordMessage> MessageReceived;
+        public event IDiscordClientWrapper.MessageReceivedHandler<IMessage> MessageReceived;
+
+        public IDiscordClient Client => _client;
 
         public DiscordClient(string token)
         {
@@ -37,13 +39,10 @@ namespace FatedTimezoneBot.Logic.Discord
             };
         }
 
-        private async Task _client_MessageReceived(SocketMessage arg)
+        private async Task _client_MessageReceived(IMessage arg)
         {
-            IDiscordClient.MessageReceivedHandler<IDiscordMessage> handler = MessageReceived;
-
-            DiscordSocketMessage m = new DiscordSocketMessage(arg);
-
-            await handler?.Invoke(m);
+            IDiscordClientWrapper.MessageReceivedHandler<IMessage> handler = MessageReceived;
+            await handler?.Invoke(arg);
         }
 
         private Task Log(LogMessage msg)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Discord;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Discord
 {
-    public interface IDiscordClient
+    public interface IDiscordClientWrapper
     {
-        public delegate Task MessageReceivedHandler<IDiscordMessage>(IDiscordMessage message);
+        public delegate Task MessageReceivedHandler<IDiscordMessage>(IMessage message);
 
         Task Connect();
 
-        public event MessageReceivedHandler<IDiscordMessage> MessageReceived;
+        public event MessageReceivedHandler<IMessage> MessageReceived;
     }
 }
