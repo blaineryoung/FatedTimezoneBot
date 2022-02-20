@@ -1,4 +1,5 @@
-﻿using FatedTimezoneBot.Logic.Discord;
+﻿using Discord;
+using FatedTimezoneBot.Logic.Discord;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Utility;
 using System;
@@ -19,7 +20,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             this.channelInformationFetcher = channelInformationFetcher;
         }
 
-        public async Task<bool> HandleCommand(IDiscordMessage message)
+        public async Task<bool> HandleCommand(IMessage message)
         {
             if (!TimeUtilities.ContainsTime(message.Content))
             {
@@ -29,11 +30,11 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             ChannelInformation channelInformation = null;
             try
             {
-                channelInformation = await channelInformationFetcher.GetChannelInformation(message.ChannelId);
+                channelInformation = await channelInformationFetcher.GetChannelInformation(message.Channel.Id);
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Got exception {e.Message} when attempting to get channel information for {message.ChannelId}");
+                Console.WriteLine($"Got exception {e.Message} when attempting to get channel information for {message.Channel.Id}");
                 Console.WriteLine(e.StackTrace);
 
                 return false;
@@ -42,12 +43,14 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             return await OutputTimes(message, channelInformation);
         }
 
-        private async Task<bool> OutputTimes(IDiscordMessage message, ChannelInformation channelInformation)
+        private async Task<bool> OutputTimes(IMessage message, ChannelInformation channelInformation)
         {
+            string userName = DiscordUtilities.GetDisambiguatedUser(message.Author);
+
             TimeZoneInfo tz;
-            if (false == channelInformation.PlayerInformation.TimeZoneMappings.TryGetValue(message.UserName, out tz))
+            if (false == channelInformation.PlayerInformation.TimeZoneMappings.TryGetValue(userName, out tz))
             {
-                Console.WriteLine($"User {message.UserName} not found");
+                Console.WriteLine($"User {userName} not found");
                 return false;
             }
 
@@ -55,7 +58,10 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 
             StringBuilder sb = TimeUtilities.PrintUserTimes(userTime, tz, channelInformation.PlayerInformation.DisplayMappings);
 
-            await message.SendEmbededMessageAsync(sb.ToString());
+            EmbedBuilder eb = new EmbedBuilder();
+
+            eb.Description = sb.ToString();
+            await message.Channel.SendMessageAsync("", false, eb.Build());
 
             return true;
         }

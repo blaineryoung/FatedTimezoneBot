@@ -26,7 +26,7 @@ namespace FatedTimezoneBot
             var token = File.ReadAllText(tokenFile);
 
             // Do setup stuff.  Normally this would be in the ioc file.
-            FatedTimezoneBot.Logic.Discord.IDiscordClient client = new DiscordClient(token);
+            FatedTimezoneBot.Logic.Discord.IDiscordClientWrapper client = new DiscordClient(token);
             await client.Connect();
 
             MessageDispatcher md = new MessageDispatcher(client);

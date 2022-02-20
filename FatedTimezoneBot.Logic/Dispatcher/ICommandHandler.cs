@@ -1,4 +1,5 @@
-﻿using FatedTimezoneBot.Logic.Discord;
+﻿using Discord;
+using FatedTimezoneBot.Logic.Discord;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace FatedTimezoneBot.Logic.Dispatcher
         /// </summary>
         /// <param name="message"></param>
         /// <returns>True if the message was processed by this command, false otherwise</returns>
-        Task<bool> HandleCommand(IDiscordMessage message);
+        Task<bool> HandleCommand(IMessage message);
     }
 }

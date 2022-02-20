@@ -1,4 +1,5 @@
-﻿using FatedTimezoneBot.Logic.Discord;
+﻿using Discord;
+using FatedTimezoneBot.Logic.Discord;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +13,14 @@ namespace FatedTimezoneBot.Logic.Dispatcher
     {
         List<ICommandHandler> handlers = new List<ICommandHandler>();
 
-        public MessageDispatcher(IDiscordClient client)
+        public MessageDispatcher(IDiscordClientWrapper client)
         {
             client.MessageReceived += Client_MessageReceived;
         }
 
-        private async Task Client_MessageReceived(IDiscordMessage message)
+        private async Task Client_MessageReceived(IMessage message)
         {
-            if (message.IsBot)
+            if (message.Author.IsBot)
             {
                 return;
             }

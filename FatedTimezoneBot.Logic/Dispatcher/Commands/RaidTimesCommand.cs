@@ -1,4 +1,5 @@
-﻿using FatedTimezoneBot.Logic.Discord;
+﻿using Discord;
+using FatedTimezoneBot.Logic.Discord;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Utility;
@@ -23,7 +24,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             this.channelInformationFetcher = channelInformationFetcher;
         }
 
-        public async Task<bool> HandleCommand(IDiscordMessage message)
+        public async Task<bool> HandleCommand(IMessage message)
         {
             if (!message.Content.Contains(RaidTimesCommandString, StringComparison.OrdinalIgnoreCase))
             {
@@ -33,11 +34,11 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             ChannelInformation channelInformation = null;
             try
             {
-                channelInformation = await channelInformationFetcher.GetChannelInformation(message.ChannelId);
+                channelInformation = await channelInformationFetcher.GetChannelInformation(message.Channel.Id);
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Got exception {e.Message} when attempting to get channel information for {message.ChannelId}");
+                Console.WriteLine($"Got exception {e.Message} when attempting to get channel information for {message.Channel.Id}");
                 Console.WriteLine(e.StackTrace);
 
                 return false;
@@ -46,7 +47,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             return await this.PrintRaidTimes(message, channelInformation);
         }
 
-        private async Task<bool> PrintRaidTimes(IDiscordMessage message, ChannelInformation channelInformation)
+        private async Task<bool> PrintRaidTimes(IMessage message, ChannelInformation channelInformation)
         {
             StringBuilder raidTimes = new StringBuilder();
             TimeSpan nextRaid = TimeSpan.MaxValue;
@@ -102,7 +103,10 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                 raidTimes.AppendLine($"Next raid is in **{timeTillRaid}**");
             }
 
-            await message.SendEmbededMessageAsync(raidTimes.ToString());
+            EmbedBuilder eb = new EmbedBuilder();
+
+            eb.Description = raidTimes.ToString();
+            await message.Channel.SendMessageAsync("", false, eb.Build());
 
             return true;
         }

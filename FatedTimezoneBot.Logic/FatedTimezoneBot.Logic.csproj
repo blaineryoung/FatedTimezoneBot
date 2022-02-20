@@ -12,9 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ChannelData\922197476230967318.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ChannelData\790491244354469892.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dispatcher\Events\" />
   </ItemGroup>
 
 </Project>
