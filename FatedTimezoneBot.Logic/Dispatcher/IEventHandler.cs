@@ -9,6 +9,10 @@ namespace FatedTimezoneBot.Logic.Dispatcher
 {
     public interface IEventHandler
     {
-        Task<bool> HandleEvent();
+        Task HandleEvent();
+
+        string Name { get; }
+
+        ulong Interval { get; }
     }
 }
