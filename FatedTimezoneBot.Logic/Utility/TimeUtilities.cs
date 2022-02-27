@@ -9,8 +9,9 @@ namespace FatedTimezoneBot.Logic.Utility
 {
     public static class TimeUtilities
     {
-        private static Regex IsTime = new Regex("((1[0-2]|0?[1-9]):?([0-5][0-9])?\\s*?([AaPp][Mm]))");
-        private static Regex MaybeTime = new Regex("(at\\s*?(1[0-2]|0?[1-9]):?([0-5][0-9])?)");
+        private static Regex IsTime = new Regex("\\b((0?[1-9]|1[012])([:.][0-5][0-9])?(\\s?[AaPp][Mm])|([01]?[0-9]|2[0-3])([:.][0-5][0-9]))\\b");
+        private static Regex MaybeTime = new Regex("(at\\s*?(1[0-2]|0?[1-9]):?([0-5][0-9])?\\s)");
+        private static Regex TimeParser = new Regex("((1[0-2]|0?[1-9]):?([0-5][0-9])?\\s*?([AaPp][Mm]))");
 
         public static bool ContainsTime(string content)
         {
@@ -28,7 +29,7 @@ namespace FatedTimezoneBot.Logic.Utility
         public static DateTime GetTimeFromText(string timeString, TimeZoneInfo sourceTimeZone)
         {
             // Determine if there was a match.
-            MatchCollection mc = IsTime.Matches(timeString);
+            MatchCollection mc = TimeParser.Matches(timeString);
             MatchCollection mcMaybe = MaybeTime.Matches(timeString);
             if (mc.Count == 0 && mcMaybe.Count == 0)
             {
