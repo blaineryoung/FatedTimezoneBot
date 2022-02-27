@@ -9,5 +9,7 @@ namespace FatedTimezoneBot.Logic.Information
     public interface IChannelInformationFetcher
     {
         Task<ChannelInformation> GetChannelInformation(ulong channelId);
+
+
     }
 }
