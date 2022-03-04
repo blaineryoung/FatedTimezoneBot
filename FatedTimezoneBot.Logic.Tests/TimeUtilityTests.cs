@@ -20,7 +20,7 @@ namespace FatedTimezoneBot.Logic.Tests
         [Test]
         public void TimeStringsTest()
         {
-            string[] goodStrings = { "4:30","3:00 pm", "12pm", "at 5 we feast", "12AM"};
+            string[] goodStrings = { "4:30","3:00 pm", "12pm", "at 5 we feast", "12AM", "at 12"};
             foreach (string s in goodStrings)
             {
                 Assert.IsTrue(TimeUtilities.ContainsTime(s), $"{s} marked as not returning a time when it shouldn't");
