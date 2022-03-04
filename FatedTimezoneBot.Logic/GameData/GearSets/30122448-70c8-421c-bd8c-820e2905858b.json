@@ -1,0 +1,200 @@
+﻿{
+  "id": "30122448-70c8-421c-bd8c-820e2905858b",
+  "jobAbbrev": "SCH",
+  "jobIconPath": "/jobs/SCH.svg",
+  "clanName": "Dunesfolk",
+  "isOwner": false,
+  "name": "6.05 Comfy Set",
+  "lastUpdate": "2022-01-10T20:13:34.693147Z",
+  "minItemLevel": 560,
+  "maxItemLevel": 605,
+  "minMateriaTier": 9,
+  "maxMateriaTier": 10,
+  "materia": {
+    "35215": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35217": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35218": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35219": {
+      "1": 33932,
+      "2": 33931
+    },
+    "35228": {
+      "1": 33932,
+      "2": 33933
+    },
+    "35233": {
+      "1": 33933,
+      "2": 33933
+    },
+    "35256": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35290": {
+      "1": 33933,
+      "2": 33931
+    },
+    "35291": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35294": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35303": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35308": {
+      "1": 33932,
+      "2": 33931
+    },
+    "35313": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35093R": {
+      "1": 33931,
+      "2": 33931,
+      "3": 33918,
+      "4": 33918,
+      "5": 33918
+    },
+    "35243R": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35318L": {
+      "1": 33932,
+      "2": 33931
+    }
+  },
+  "totalParams": [
+    {
+      "id": "5",
+      "name": "MND",
+      "value": 2575
+    },
+    {
+      "id": "3",
+      "name": "VIT",
+      "value": 2479
+    },
+    {
+      "id": "21",
+      "name": "DEF",
+      "value": 1777
+    },
+    {
+      "id": "6",
+      "name": "PIE",
+      "value": 719
+    },
+    {
+      "id": "22",
+      "name": "DH",
+      "value": 868
+    },
+    {
+      "id": "27",
+      "name": "CRT",
+      "value": 2335
+    },
+    {
+      "id": "44",
+      "name": "DET",
+      "value": 1830
+    },
+    {
+      "id": "46",
+      "name": "SPS",
+      "value": 400
+    },
+    {
+      "name": "GCD",
+      "units": "s",
+      "value": 2.5
+    },
+    {
+      "name": "Average Item Level",
+      "value": 600
+    },
+    {
+      "name": "Critical Hit Multiplier",
+      "units": "%",
+      "value": 160.3
+    },
+    {
+      "name": "Critical Hit Rate",
+      "units": "%",
+      "value": 25.3
+    },
+    {
+      "name": "Defense Mitigation",
+      "units": "%",
+      "value": 14
+    },
+    {
+      "name": "Determination Multiplier",
+      "units": "%",
+      "value": 110.6
+    },
+    {
+      "name": "Direct Hit Rate",
+      "units": "%",
+      "value": 13.5
+    },
+    {
+      "name": "HP",
+      "value": 53912
+    },
+    {
+      "name": "MND Multiplier",
+      "units": "%",
+      "value": 111.92
+    },
+    {
+      "name": "MP per Tick",
+      "value": 225
+    },
+    {
+      "name": "Spell Speed Multiplier",
+      "units": "%",
+      "value": 100
+    },
+    {
+      "id": 13,
+      "name": "Weapon Damage",
+      "value": 120
+    }
+  ],
+  "buffs": null,
+  "relics": null,
+  "patch": 6.0,
+  "job": 28,
+  "clan": 6,
+  "weapon": 35256,
+  "head": 35290,
+  "body": 35291,
+  "hands": 35217,
+  "legs": 35218,
+  "feet": 35294,
+  "offHand": null,
+  "ears": 35303,
+  "neck": 35308,
+  "wrists": 35313,
+  "fingerL": 35318,
+  "fingerR": 35243,
+  "food": 545,
+  "medicine": null
+}

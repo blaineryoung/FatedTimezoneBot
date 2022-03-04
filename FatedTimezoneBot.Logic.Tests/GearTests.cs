@@ -22,5 +22,16 @@ namespace FatedTimezoneBot.Logic.Tests
 
             Assert.AreEqual(gi.name, "Asphodelos Himation of Maiming");
         }
+
+        [Test]
+        public async Task GetGearSetTest()
+        {
+            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher(gf);
+
+            GearSetInformation gsi = await gearSetInformationFetcher.GetGearSetInformation(new Guid("30122448-70c8-421c-bd8c-820e2905858b"));
+
+            Assert.AreEqual(gsi.SlotGear["Body"].name, "Asphodelos Chiton of Healing");
+        }
     }
 }

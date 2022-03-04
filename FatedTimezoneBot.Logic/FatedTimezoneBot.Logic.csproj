@@ -21,6 +21,9 @@
     <None Update="GameData\gear.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="GameData\GearSets\30122448-70c8-421c-bd8c-820e2905858b.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
