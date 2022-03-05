@@ -1,6 +1,7 @@
 ﻿using FatedTimezoneBot.Logic.Information.Serializers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,11 +10,11 @@ namespace FatedTimezoneBot.Logic.Information
 {
     public class GearFileInformationFetcher : IGearInformationFetcher
     {
-        private GearInformation gi = null;
+        public IReadOnlyDictionary<int, GearItem> GearMap { get; private set; }
 
-        public async Task<GearInformation> GetGearInformation()
+        public async Task<GearItem> GetGearInformation(int gearId)
         {
-            if (gi == null)
+            if (GearMap == null)
             {
                 string fileName = $"gamedata\\gear.json";
                 string content;
@@ -23,10 +24,17 @@ namespace FatedTimezoneBot.Logic.Information
                 }
 
                 GearInfo info = GearInfo.DeserializeGearData(content);
-                gi = new GearInformation(info);
+                Dictionary<int, GearItem> map = new Dictionary<int, GearItem>();
+
+                foreach (GearItem g in info.GearItems)
+                {
+                    map.Add(g.id, g);
+                }
+
+                GearMap = new ReadOnlyDictionary<int, GearItem>(map);
             }
 
-            return gi;
+            return GearMap[gearId];
         }
     }
 }

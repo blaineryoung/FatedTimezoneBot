@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Information
 {
-    public interface IGearInformationFetcher
+    public interface IGearSlotMapperFactory
     {
-        Task<GearItem> GetGearInformation(int gearId);
+        Task<GearSlotMap> CreateGearSlotMap(GearSetInfo gearSetInformation);
+
+        Task<GearSlotMap> CreateGearSlotMap(CharacterInfo characterInfo);
     }
 }

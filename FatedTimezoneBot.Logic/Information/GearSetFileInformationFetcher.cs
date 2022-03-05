@@ -12,7 +12,7 @@ namespace FatedTimezoneBot.Logic.Information
 
         // This is a cheesy in memory cache.  If this ever gets big, we'll need to do something better. 
         // It also doesn't handle file changes.  Simple thing to do would be add a file system watcher.  Later
-        private Dictionary<Guid, GearSetInformation> gearSetCache = new Dictionary<Guid, GearSetInformation>();
+        private Dictionary<Guid, GearSetInfo> gearSetCache = new Dictionary<Guid, GearSetInfo>();
 
         IGearInformationFetcher _gearFetcher;
 
@@ -21,9 +21,9 @@ namespace FatedTimezoneBot.Logic.Information
             this._gearFetcher = gearFetcher;
         }
 
-        public async Task<GearSetInformation> GetGearSetInformation(Guid gearSetId)
+        public async Task<GearSetInfo> GetGearSetInformation(Guid gearSetId)
         {
-            GearSetInformation gearSetInformation = null;
+            GearSetInfo gearSetInformation = null;
             if (false == gearSetCache.TryGetValue(gearSetId, out gearSetInformation))
             {
                 string fileName = $"gamedata\\gearsets\\{gearSetId}.json";
@@ -33,10 +33,7 @@ namespace FatedTimezoneBot.Logic.Information
                     content = await sr.ReadToEndAsync();
                 }
 
-                GearSetInfo gsi = GearSetInfo.Deserialize(content);
-                GearInformation gearInfo = await _gearFetcher.GetGearInformation();
-
-                gearSetInformation = new GearSetInformation(gsi, gearInfo);
+                gearSetInformation = GearSetInfo.Deserialize(content);
 
                 gearSetCache.Add(gearSetId, gearSetInformation);
             }

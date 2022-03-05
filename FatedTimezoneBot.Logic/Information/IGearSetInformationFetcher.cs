@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FatedTimezoneBot.Logic.Information.Serializers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace FatedTimezoneBot.Logic.Information
 {
     public interface IGearSetInformationFetcher
     {
-        Task<GearSetInformation> GetGearSetInformation(Guid gearSetId);
+        Task<GearSetInfo> GetGearSetInformation(Guid gearSetId);
     }
 }
