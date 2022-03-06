@@ -18,10 +18,10 @@ namespace FatedTimezoneBot
     class Program
     {
         public static void Main(string[] args)
-    		=> new Program().MainAsync(args[0], args[1], args[2]).GetAwaiter().GetResult();
+    		=> new Program().MainAsync(args[0]).GetAwaiter().GetResult();
 
 
-        public async Task MainAsync(string tokenFile, string playerFile, string raidFile)
+        public async Task MainAsync(string tokenFile)
 		{            
             var token = File.ReadAllText(tokenFile);
 
@@ -32,8 +32,14 @@ namespace FatedTimezoneBot
             MessageDispatcher md = new MessageDispatcher(client);
 
             IChannelInformationFetcher fetcher = new ChannelFileInformationFetcher();
+            ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher(gf);
+
             md.AddHandler(new ConvertTimeCommand(fetcher));
             md.AddHandler(new RaidTimesCommand(fetcher));
+            md.AddHandler(new ShowNeededGearCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher));
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
