@@ -57,40 +57,48 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                 return false;
             }
 
-            string userName = DiscordUtilities.GetDisambiguatedUser(message.Author);
+            List<ChannelPlayer> players = new List<ChannelPlayer>();
 
-            ChannelPlayer channelPlayer;
-            if (false == channelInformation.PlayerInformation.PlayerMap.TryGetValue(userName, out channelPlayer))
+            // determine who we should retrieve
+            String[] tokens = message.Content.Split(' ');
+            if ((tokens.Length > 1) && (0 == string.Compare(tokens[1], "all", StringComparison.OrdinalIgnoreCase)))
             {
-                return false;
+                players.AddRange(channelInformation.PlayerInformation.PlayerMap.Values);
+            }
+            else
+            {
+                string playerName;
+                if(tokens.Length > 1)
+                {
+                    playerName = tokens[1];
+                }
+                else
+                {
+                    playerName = DiscordUtilities.GetDisambiguatedUser(message.Author);
+                }
+
+                ChannelPlayer channelPlayer;
+                if (false == channelInformation.PlayerInformation.PlayerMap.TryGetValue(playerName, out channelPlayer))
+                {
+                    if (false == channelInformation.PlayerInformation.PlayerDisplayNameMap.TryGetValue(playerName, out channelPlayer))
+                    {
+                        return false;
+                    }
+                }
+                players.Add(channelPlayer);
             }
 
             StringBuilder output = new StringBuilder();
 
-            foreach(ChannelCharacter character in channelPlayer.characters)
+            foreach (ChannelPlayer player in players)
             {
-                CharacterInfo characterInfo = await this.characterFetcher.GetCharacterInformation(character.characterid);
-                GearSetInfo setInfo = await this.gearSetInformationFetcher.GetGearSetInformation(new Guid(character.bisid));
-
-                GearSlotMap equippedGear = await this.gearSlotMapper.CreateGearSlotMap(characterInfo);
-                GearSlotMap bisGear = await this.gearSlotMapper.CreateGearSlotMap(setInfo);
-
-                GearSlotMap missingGear = GearSlotMap.GenerateDiff(equippedGear, bisGear);
-
-                output.AppendLine($"**{characterInfo.Character.Name}**");
-                if (missingGear.Count == 0)
+                output.AppendLine($"**------{player.displayname}------**");
+                foreach (ChannelCharacter character in player.characters)
                 {
-                    output.AppendLine("Currently in BIS");
+                    output.Append(await this.BuildDiffForCharacter(character));
                 }
-                else
-                {
-                    foreach (string slot in missingGear.Slots)
-                    {
-                        output.AppendLine($"{slot} - {missingGear[slot].name}");
-                    }
-                }
+                output.AppendLine();
             }
-            output.AppendLine();
 
             EmbedBuilder eb = new EmbedBuilder();
 
@@ -98,6 +106,34 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             await message.Channel.SendMessageAsync("", false, eb.Build());
 
             return true;
+        }
+
+        private async Task<StringBuilder> BuildDiffForCharacter(ChannelCharacter character)
+        {
+            StringBuilder output = new StringBuilder();
+
+            CharacterInfo characterInfo = await this.characterFetcher.GetCharacterInformation(character.characterid);
+            GearSetInfo setInfo = await this.gearSetInformationFetcher.GetGearSetInformation(new Guid(character.bisid));
+
+            GearSlotMap equippedGear = await this.gearSlotMapper.CreateGearSlotMap(characterInfo);
+            GearSlotMap bisGear = await this.gearSlotMapper.CreateGearSlotMap(setInfo);
+
+            GearSlotMap missingGear = GearSlotMap.GenerateDiff(equippedGear, bisGear);
+
+            output.AppendLine($"**{characterInfo.Character.Name}**");
+            if (missingGear.Count == 0)
+            {
+                output.AppendLine("Currently in BIS");
+            }
+            else
+            {
+                foreach (string slot in missingGear.Slots)
+                {
+                    output.AppendLine($"{slot} - {missingGear[slot].name}");
+                }
+            }
+
+            return output;
         }
     }
 }

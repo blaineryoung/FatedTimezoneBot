@@ -13,11 +13,13 @@ namespace FatedTimezoneBot.Logic.Information
         IReadOnlyDictionary<string, TimeZoneInfo> timeZoneMappings;
         IReadOnlyDictionary<TimeZoneInfo, string> displayMappings;
         IReadOnlyDictionary<string, ChannelPlayer> playerMap;
+        IReadOnlyDictionary<string, ChannelPlayer> playerDisplayNameMap;
 
         public IReadOnlyDictionary<string, TimeZoneInfo> TimeZoneMappings => timeZoneMappings;
         public IReadOnlyDictionary<TimeZoneInfo, string> DisplayMappings => displayMappings;
 
         public IReadOnlyDictionary<string, ChannelPlayer> PlayerMap => playerMap;
+        public IReadOnlyDictionary<string, ChannelPlayer> PlayerDisplayNameMap => playerDisplayNameMap;
 
         public PlayerInformation(IEnumerable<ChannelPlayer> p)
         {
@@ -26,6 +28,7 @@ namespace FatedTimezoneBot.Logic.Information
             Dictionary<string, TimeZoneInfo> timeZoneMappings = new Dictionary<string, TimeZoneInfo>();
             Dictionary<TimeZoneInfo, string> displayMappings = new Dictionary<TimeZoneInfo, string>();
             Dictionary<string, ChannelPlayer> playerMap = new Dictionary<string, ChannelPlayer>();
+            Dictionary<string, ChannelPlayer> playerDisplayNameMap = new Dictionary<string, ChannelPlayer>();
 
             foreach (ChannelPlayer staticMember in p)
             {
@@ -44,11 +47,13 @@ namespace FatedTimezoneBot.Logic.Information
                 }
 
                 playerMap.Add(staticMember.username, staticMember);
+                playerDisplayNameMap.Add(staticMember.displayname, staticMember);
             }
 
             this.timeZoneMappings = new ReadOnlyDictionary<string, TimeZoneInfo>(timeZoneMappings);
             this.displayMappings = new ReadOnlyDictionary<TimeZoneInfo, string>(displayMappings);
             this.playerMap = new ReadOnlyDictionary<string, ChannelPlayer>(playerMap);
+            this.playerDisplayNameMap = new ReadOnlyDictionary<string, ChannelPlayer>(playerDisplayNameMap);
         }
     }
 }

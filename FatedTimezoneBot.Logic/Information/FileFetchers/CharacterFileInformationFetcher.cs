@@ -14,7 +14,7 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
         private Dictionary<int, CharacterInfo> characterCache = new Dictionary<int, CharacterInfo>();
 
 
-        public async Task<CharacterInfo> GetCharacterInformation(int characterId)
+        public async Task<CharacterInfo> GetCharacterInformation(int characterId, int classId = 0)
         {
 
             CharacterInfo characterInfo = null;
