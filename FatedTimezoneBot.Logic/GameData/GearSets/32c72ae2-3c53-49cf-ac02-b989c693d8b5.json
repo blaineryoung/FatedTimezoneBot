@@ -1,0 +1,184 @@
+﻿{
+  "id": "32c72ae2-3c53-49cf-ac02-b989c693d8b5",
+  "jobAbbrev": "SGE",
+  "jobIconPath": "/jobs/SGE.svg",
+  "clanName": "Veena",
+  "isOwner": false,
+  "name": "Crafted ring w/ chai",
+  "lastUpdate": "2022-01-09T20:45:58.641424Z",
+  "minItemLevel": 580,
+  "maxItemLevel": 605,
+  "minMateriaTier": 9,
+  "maxMateriaTier": 10,
+  "materia": {
+    "35215": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35217": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35218": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35233": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35262": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35291": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35294": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35303": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35313": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35093R": {
+      "1": 33931,
+      "2": 33931,
+      "3": 33918,
+      "4": 33918,
+      "5": 33918
+    },
+    "35243R": {
+      "1": 33933,
+      "2": 33933
+    },
+    "35318L": {
+      "1": 33931,
+      "2": 33932
+    }
+  },
+  "totalParams": [
+    {
+      "id": "5",
+      "name": "MND",
+      "value": 2559
+    },
+    {
+      "id": "3",
+      "name": "VIT",
+      "value": 2464
+    },
+    {
+      "id": "21",
+      "name": "DEF",
+      "value": 1777
+    },
+    {
+      "id": "6",
+      "name": "PIE",
+      "value": 390
+    },
+    {
+      "id": "22",
+      "name": "DH",
+      "value": 904
+    },
+    {
+      "id": "27",
+      "name": "CRT",
+      "value": 2277
+    },
+    {
+      "id": "44",
+      "name": "DET",
+      "value": 1951
+    },
+    {
+      "id": "46",
+      "name": "SPS",
+      "value": 656
+    },
+    {
+      "name": "GCD",
+      "units": "s",
+      "value": 2.45
+    },
+    {
+      "name": "Average Item Level",
+      "value": 599
+    },
+    {
+      "name": "Critical Hit Multiplier",
+      "units": "%",
+      "value": 159.7
+    },
+    {
+      "name": "Critical Hit Rate",
+      "units": "%",
+      "value": 24.7
+    },
+    {
+      "name": "Defense Mitigation",
+      "units": "%",
+      "value": 14
+    },
+    {
+      "name": "Determination Multiplier",
+      "units": "%",
+      "value": 111.5
+    },
+    {
+      "name": "Direct Hit Rate",
+      "units": "%",
+      "value": 14.5
+    },
+    {
+      "name": "HP",
+      "value": 53548
+    },
+    {
+      "name": "MND Multiplier",
+      "units": "%",
+      "value": 111.84
+    },
+    {
+      "name": "MP per Tick",
+      "value": 200
+    },
+    {
+      "name": "Spell Speed Multiplier",
+      "units": "%",
+      "value": 101.7
+    },
+    {
+      "id": 13,
+      "name": "Weapon Damage",
+      "value": 120
+    }
+  ],
+  "buffs": null,
+  "relics": null,
+  "patch": 6.0,
+  "job": 40,
+  "clan": 16,
+  "weapon": 35262,
+  "head": 35215,
+  "body": 35291,
+  "hands": 35217,
+  "legs": 35218,
+  "feet": 35294,
+  "offHand": null,
+  "ears": 35303,
+  "neck": 35233,
+  "wrists": 35313,
+  "fingerL": 35318,
+  "fingerR": 35093,
+  "food": 549,
+  "medicine": null
+}
