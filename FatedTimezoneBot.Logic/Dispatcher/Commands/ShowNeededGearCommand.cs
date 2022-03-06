@@ -120,6 +120,8 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 
             GearSlotMap missingGear = GearSlotMap.GenerateDiff(equippedGear, bisGear);
 
+            Dictionary<string, int> sourceCounts = new Dictionary<string, int>();
+
             output.AppendLine($"**{characterInfo.Character.Name}**");
             if (missingGear.Count == 0)
             {
@@ -129,8 +131,26 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             {
                 foreach (string slot in missingGear.Slots)
                 {
-                    output.AppendLine($"{slot} - {missingGear[slot].name}");
+                    string source = GameUtilities.GetGearSource(missingGear[slot]);
+
+                    int currentCount = 0;
+                    if (sourceCounts.ContainsKey(source))
+                    {
+                        currentCount = sourceCounts[source];
+                    }
+
+                    currentCount++;
+                    sourceCounts[source] = currentCount;
+
+                    output.AppendLine($"{slot} - {missingGear[slot].name} ({source})");
                 }
+
+                output.AppendLine();
+                foreach (KeyValuePair<string, int> entry in sourceCounts)
+                {
+                    output.Append($"**{entry.Key}**-{entry.Value}   ");
+                }
+                output.AppendLine();
             }
 
             return output;
