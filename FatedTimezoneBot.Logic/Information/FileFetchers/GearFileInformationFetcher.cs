@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FatedTimezoneBot.Logic.Information
+namespace FatedTimezoneBot.Logic.Information.FileFetchers
 {
     public class GearFileInformationFetcher : IGearInformationFetcher
     {

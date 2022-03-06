@@ -12,6 +12,7 @@ using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Dispatcher;
 using FatedTimezoneBot.Logic.Dispatcher.Commands;
+using FatedTimezoneBot.Logic.Information.FileFetchers;
 
 namespace FatedTimezoneBot
 {

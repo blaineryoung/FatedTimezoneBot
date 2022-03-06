@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
+using FatedTimezoneBot.Logic.Information.FileFetchers;
 
 namespace FatedTimezoneBot.Logic.Tests
 {
