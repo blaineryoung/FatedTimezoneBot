@@ -32,7 +32,6 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public string Avatar { get; set; }
         public string Bio { get; set; }
         public Classjob[] ClassJobs { get; set; }
-        public Classjobsbozjan ClassJobsBozjan { get; set; }
         public Classjobselemental ClassJobsElemental { get; set; }
         public string DC { get; set; }
         public string FreeCompanyId { get; set; }

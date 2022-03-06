@@ -13,6 +13,7 @@ using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Dispatcher;
 using FatedTimezoneBot.Logic.Dispatcher.Commands;
 using FatedTimezoneBot.Logic.Information.FileFetchers;
+using FatedTimezoneBot.Logic.Information.RestFetchers;
 
 namespace FatedTimezoneBot
 {
@@ -33,7 +34,7 @@ namespace FatedTimezoneBot
             MessageDispatcher md = new MessageDispatcher(client);
 
             IChannelInformationFetcher fetcher = new ChannelFileInformationFetcher();
-            ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
+            ICharacterInformationFetcher characterFetcher = new CharacterRestInformationFetcher();
             IGearInformationFetcher gf = new GearFileInformationFetcher();
             IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
             IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher(gf);
