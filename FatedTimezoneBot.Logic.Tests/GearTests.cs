@@ -48,5 +48,24 @@ namespace FatedTimezoneBot.Logic.Tests
 
             Assert.AreEqual(gsm["Body"].name, "Limbo Chiton of Healing");
         }
+
+        [Test]
+        public async Task GearDiffTEst()
+        {
+            ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher(gf);
+
+            CharacterInfo ci = await characterFetcher.GetCharacterInformation(19442264);
+            GearSlotMap characterGear = await gearSlotMapper.CreateGearSlotMap(ci);
+
+            GearSetInfo gsi = await gearSetInformationFetcher.GetGearSetInformation(new Guid("30122448-70c8-421c-bd8c-820e2905858b"));
+            GearSlotMap gearSlotGear = await gearSlotMapper.CreateGearSlotMap(gsi);
+
+            GearSlotMap diffSet = GearSlotMap.GenerateDiff(characterGear, gearSlotGear);
+
+            Assert.AreEqual(7, diffSet.Count);
+        }
     }
 }

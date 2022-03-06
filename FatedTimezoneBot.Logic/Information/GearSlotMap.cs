@@ -21,6 +21,23 @@ namespace FatedTimezoneBot.Logic.Information
             get { return slotMappings[name]; }
         }
 
+        public int Count => slotMappings.Count;
+
         public IEnumerable<string> Slots { get { return slotMappings.Keys; } }
+
+        public static GearSlotMap GenerateDiff(GearSlotMap current, GearSlotMap expected)
+        {
+            Dictionary<string, GearItem> diff = new Dictionary<string, GearItem>();
+
+            foreach (string slot in expected.Slots)
+            {
+                if (current[slot] != expected[slot])
+                {
+                    diff.Add(slot, expected[slot]);
+                }
+            }
+
+            return new GearSlotMap(diff);
+        }
     }
 }
