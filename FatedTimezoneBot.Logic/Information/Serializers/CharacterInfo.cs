@@ -142,10 +142,10 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
     public class CharacterGearItem
     {
         public object Creator { get; set; }
-        public int Dye { get; set; }
+        public int? Dye { get; set; }
         public int ID { get; set; }
         public int[] Materia { get; set; }
-        public int Mirage { get; set; }
+        public int? Mirage { get; set; }
     }
 
     public class Grandcompany

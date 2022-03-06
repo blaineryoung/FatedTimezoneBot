@@ -48,16 +48,16 @@ namespace FatedTimezoneBot.Logic.Information
             Dictionary<string, GearItem> slotGear = new Dictionary<string, GearItem>();
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
-            IEnumerable<PropertyInfo> props = characterInfo.Character.GearSet.GetType().GetProperties();
+            IEnumerable<PropertyInfo> props = characterInfo.Character.GearSet.Gear.GetType().GetProperties();
 
             foreach (PropertyInfo prop in props)
             {
-                object value = prop.GetValue(characterInfo.Character.GearSet, null);
+                object value = prop.GetValue(characterInfo.Character.GearSet.Gear, null);
 
-                if (null != value)
+                if ((null != value) && (value is CharacterGearItem))
                 {
-                    int id = (int)value;
-                    GearItem item = await gearInformationFetcher.GetGearInformation(id);
+                    CharacterGearItem cgi = (CharacterGearItem)value;
+                    GearItem item = await gearInformationFetcher.GetGearInformation(cgi.ID);
                     string name = textInfo.ToTitleCase(item.slotName);
                     slotGear[name] = item;
                 }

@@ -34,5 +34,19 @@ namespace FatedTimezoneBot.Logic.Tests
 
             Assert.AreEqual(gsm["Body"].name, "Asphodelos Chiton of Healing");
         }
+
+        [Test]
+        public async Task GetCharacterGearTest()
+        {
+            ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+
+            CharacterInfo ci = await characterFetcher.GetCharacterInformation(19442264);
+
+            GearSlotMap gsm = await gearSlotMapper.CreateGearSlotMap(ci);
+
+            Assert.AreEqual(gsm["Body"].name, "Limbo Chiton of Healing");
+        }
     }
 }
