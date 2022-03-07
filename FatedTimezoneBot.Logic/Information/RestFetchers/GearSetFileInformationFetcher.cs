@@ -2,6 +2,7 @@
 using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -15,7 +16,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
 
         // This is a cheesy in memory cache.  If this ever gets big, we'll need to do something better. 
         // It also doesn't handle file changes.  Simple thing to do would be add a file system watcher.  Later
-        private Dictionary<Guid, GearSetInfo> gearSetCache = new Dictionary<Guid, GearSetInfo>();
+        private ConcurrentDictionary<Guid, GearSetInfo> gearSetCache = new ConcurrentDictionary<Guid, GearSetInfo>();
 
         public GearSetRestInformationFetcher()
         {
@@ -27,7 +28,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
             if (false == gearSetCache.TryGetValue(gearSetId, out gearSetInformation))
             { 
                 gearSetInformation = await GetGearInfoCall(gearSetId);
-                gearSetCache.Add(gearSetId, gearSetInformation);
+                gearSetCache.TryAdd(gearSetId, gearSetInformation);
             }
 
             return gearSetInformation;

@@ -1,6 +1,7 @@
 ﻿using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -12,7 +13,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
     public class CharacterRestInformationFetcher : ICharacterInformationFetcher
     {
         // This is a cheesy in memory cache.  If this ever gets big, we'll need to do something better. 
-        private Dictionary<int, CharacterInfoCache> characterCache = new Dictionary<int, CharacterInfoCache>();
+        private ConcurrentDictionary<int, CharacterInfoCache> characterCache = new ConcurrentDictionary<int, CharacterInfoCache>();
         const int characterAgeMaxMinutes = 30;
 
         public async Task<CharacterInfo> GetCharacterInformation(int characterId, int classId = 0)
@@ -30,7 +31,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
                 }
 
                 characterInfo = new CharacterInfoCache(info);
-                characterCache.Add(characterId, characterInfo);
+                characterCache.TryAdd(characterId, characterInfo);
 
                 return info;
             }
@@ -47,7 +48,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
                 }
 
                 characterInfo = new CharacterInfoCache(info);
-                characterCache.Add(characterId, characterInfo);
+                characterCache.TryAdd(characterId, characterInfo);
 
                 return info;
             }    

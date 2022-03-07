@@ -1,5 +1,6 @@
 ﻿using FatedTimezoneBot.Logic.Information.Serializers;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
 
         // This is a cheesy in memory cache.  If this ever gets big, we'll need to do something better. 
         // It also doesn't handle file changes.  Simple thing to do would be add a file system watcher.  Later
-        private Dictionary<Guid, GearSetInfo> gearSetCache = new Dictionary<Guid, GearSetInfo>();
+        private ConcurrentDictionary<Guid, GearSetInfo> gearSetCache = new ConcurrentDictionary<Guid, GearSetInfo>();
 
         public GearSetFileInformationFetcher()
         {
@@ -32,7 +33,7 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
 
                 gearSetInformation = GearSetInfo.Deserialize(content);
 
-                gearSetCache.Add(gearSetId, gearSetInformation);
+                gearSetCache.TryAdd(gearSetId, gearSetInformation);
             }
 
             return gearSetInformation;

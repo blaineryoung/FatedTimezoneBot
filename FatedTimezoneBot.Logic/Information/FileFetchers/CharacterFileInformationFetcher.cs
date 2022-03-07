@@ -1,5 +1,6 @@
 ﻿using FatedTimezoneBot.Logic.Information.Serializers;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
     {
         // This is a cheesy in memory cache.  If this ever gets big, we'll need to do something better. 
         // It also doesn't handle file changes.  Simple thing to do would be add a file system watcher.  Later
-        private Dictionary<int, CharacterInfo> characterCache = new Dictionary<int, CharacterInfo>();
+        private ConcurrentDictionary<int, CharacterInfo> characterCache = new ConcurrentDictionary<int, CharacterInfo>();
 
 
         public async Task<CharacterInfo> GetCharacterInformation(int characterId, int classId = 0)
@@ -29,7 +30,7 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
 
                 characterInfo = CharacterInfo.Deserialize(content);
 
-                characterCache.Add(characterId, characterInfo);
+                characterCache.TryAdd(characterId, characterInfo);
             }
 
             return characterInfo;

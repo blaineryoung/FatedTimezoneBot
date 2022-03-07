@@ -3,6 +3,7 @@ using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Utility;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -88,21 +89,30 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                 players.Add(channelPlayer);
             }
 
-            StringBuilder output = new StringBuilder();
+            ConcurrentBag<StringBuilder> outputs = new ConcurrentBag<StringBuilder>();
 
-            foreach (ChannelPlayer player in players)
+            var options = new ParallelOptions { MaxDegreeOfParallelism = 8 };
+            await Parallel.ForEachAsync(players, options, async (player, token) =>
             {
+                StringBuilder output = new StringBuilder();
                 output.AppendLine($"**------{player.displayname}------**");
                 foreach (ChannelCharacter character in player.characters)
                 {
                     output.Append(await this.BuildDiffForCharacter(character));
                 }
                 output.AppendLine();
-            }
+                outputs.Add(output);
+            });
 
             EmbedBuilder eb = new EmbedBuilder();
 
-            eb.Description = output.ToString();
+            StringBuilder commandOutput = new StringBuilder();
+            foreach (StringBuilder o in outputs)
+            {
+                commandOutput.AppendLine(o.ToString());
+            }
+
+            eb.Description = commandOutput.ToString();
             await message.Channel.SendMessageAsync("", false, eb.Build());
 
             return true;
