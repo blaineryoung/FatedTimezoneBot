@@ -42,6 +42,7 @@ namespace FatedTimezoneBot
             md.AddHandler(new ConvertTimeCommand(fetcher));
             md.AddHandler(new RaidTimesCommand(fetcher));
             md.AddHandler(new ShowNeededGearCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher));
+            md.AddHandler(new ShowGearSummaryCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher));
 
             // Block this task until the program is closed.
             await Task.Delay(-1);

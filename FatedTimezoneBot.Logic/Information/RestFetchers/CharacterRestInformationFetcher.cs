@@ -47,8 +47,8 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
                     return characterInfo.CharacterInfo;
                 }
 
-                characterInfo = new CharacterInfoCache(info);
-                characterCache.TryAdd(characterId, characterInfo);
+                CharacterInfoCache characterInfoNew = new CharacterInfoCache(info);
+                characterCache.TryUpdate(characterId, characterInfoNew, characterInfo);
 
                 return info;
             }    
