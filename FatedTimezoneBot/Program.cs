@@ -37,7 +37,7 @@ namespace FatedTimezoneBot
             ICharacterInformationFetcher characterFetcher = new CharacterRestInformationFetcher();
             IGearInformationFetcher gf = new GearFileInformationFetcher();
             IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
-            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher(gf);
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetRestInformationFetcher();
 
             md.AddHandler(new ConvertTimeCommand(fetcher));
             md.AddHandler(new RaidTimesCommand(fetcher));

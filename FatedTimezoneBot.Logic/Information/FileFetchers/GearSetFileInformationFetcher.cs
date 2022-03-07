@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FatedTimezoneBot.Logic.Information
+namespace FatedTimezoneBot.Logic.Information.FileFetchers
 {
     public class GearSetFileInformationFetcher : IGearSetInformationFetcher
     {
@@ -14,11 +14,8 @@ namespace FatedTimezoneBot.Logic.Information
         // It also doesn't handle file changes.  Simple thing to do would be add a file system watcher.  Later
         private Dictionary<Guid, GearSetInfo> gearSetCache = new Dictionary<Guid, GearSetInfo>();
 
-        IGearInformationFetcher _gearFetcher;
-
-        public GearSetFileInformationFetcher(IGearInformationFetcher gearFetcher)
+        public GearSetFileInformationFetcher()
         {
-            this._gearFetcher = gearFetcher;
         }
 
         public async Task<GearSetInfo> GetGearSetInformation(Guid gearSetId)

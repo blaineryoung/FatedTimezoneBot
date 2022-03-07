@@ -26,7 +26,7 @@ namespace FatedTimezoneBot.Logic.Tests
         public async Task GetGearSetTest()
         {
             IGearInformationFetcher gf = new GearFileInformationFetcher();
-            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher(gf);
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher();
             IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
 
             GearSetInfo gsi = await gearSetInformationFetcher.GetGearSetInformation(new Guid("30122448-70c8-421c-bd8c-820e2905858b"));
@@ -56,7 +56,7 @@ namespace FatedTimezoneBot.Logic.Tests
             ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
             IGearInformationFetcher gf = new GearFileInformationFetcher();
             IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
-            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher(gf);
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher();
 
             CharacterInfo ci = await characterFetcher.GetCharacterInformation(19442264);
             GearSlotMap characterGear = await gearSlotMapper.CreateGearSlotMap(ci);
