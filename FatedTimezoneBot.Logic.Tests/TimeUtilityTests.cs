@@ -10,7 +10,7 @@ namespace FatedTimezoneBot.Logic.Tests
         [Test]
         public void NonTimeStringsTests()
         {
-            string[] badStrings = { "", "at 5999", "13:00pm", "woodchuck" };
+            string[] badStrings = { "", "at 5999", "13:00pm", "woodchuck", "at 50c" };
             foreach (string s in badStrings)
             {
                 Assert.IsFalse(TimeUtilities.ContainsTime(s), $"{s} marked as returning a time when it shouldn't");
@@ -20,7 +20,7 @@ namespace FatedTimezoneBot.Logic.Tests
         [Test]
         public void TimeStringsTest()
         {
-            string[] goodStrings = { "4:30","3:00 pm", "12pm", "at 5 we feast", "12AM", "at 12"};
+            string[] goodStrings = { "4:30","3:00 pm", "12pm", "12AM"};
             foreach (string s in goodStrings)
             {
                 Assert.IsTrue(TimeUtilities.ContainsTime(s), $"{s} marked as not returning a time when it shouldn't");
@@ -65,29 +65,6 @@ namespace FatedTimezoneBot.Logic.Tests
 
                     Assert.AreEqual(0, DateTime.Compare(date, parsedDate), $"returned date {parsedDate.ToString("g")} did not match expected date {date.ToString("g")} from string {dateString}");
                 }
-
-                date = date.AddHours(1);
-            }
-        }
-
-        [Test]
-        public void ParseShortcutTimeTest()
-        {
-            // Testing the at 4 functionality.  It always assumes pm
-            DateTime now = DateTime.Now;
-            DateTime date = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
-
-            while (date.Day == now.Day)
-            {
-                string dateString = $"we will meet at {date.ToString("hh", CultureInfo.InvariantCulture)} in the street";
-
-                // Handle assumed pm.
-                DateTime expectedTime = date.Hour < 12 ? date.AddHours(12) : date;
-
-                Assert.IsTrue(TimeUtilities.ContainsTime(dateString), $"{dateString} was not flagged as a time, but should have been.");
-                DateTime parsedDate = TimeUtilities.GetTimeFromText(dateString, TimeZoneInfo.Local);
-
-                Assert.AreEqual(0, DateTime.Compare(expectedTime, parsedDate), $"returned date {parsedDate.ToString("g")} did not match expected date {expectedTime.ToString("g")} from string {dateString}");
 
                 date = date.AddHours(1);
             }
