@@ -99,7 +99,14 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                 output.AppendLine($"**------{player.displayname}------**");
                 foreach (ChannelCharacter character in player.characters)
                 {
-                    output.Append(await this.BuildDiffForCharacter(character));
+                    try
+                    {
+                        output.Append(await this.BuildDiffForCharacter(character));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Could not build diff for character {character.characterid}: {e.Message}");
+                    }
                 }
                 output.AppendLine();
                 outputs.Add(output);
@@ -134,7 +141,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 
             Dictionary<string, int> sourceCounts = new Dictionary<string, int>();
 
-            output.AppendLine($"**{characterInfo.Character.Name}**");
+            output.AppendLine($"**{characterInfo.Character.Name}** (https://etro.gg/gearset/{character.bisid})");
             if (missingGear.Count == 0)
             {
                 output.AppendLine("Currently in BIS");
@@ -160,7 +167,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                 output.AppendLine();
                 foreach (KeyValuePair<string, int> entry in sourceCounts)
                 {
-                    output.Append($"**{entry.Key}**-{entry.Value}   ");
+                    output.AppendLine($"**{entry.Key}**-{entry.Value}   ");
                 }
                 output.AppendLine();
             }
