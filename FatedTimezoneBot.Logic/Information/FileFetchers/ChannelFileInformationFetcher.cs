@@ -14,6 +14,23 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
         // It also doesn't handle file changes.  Simple thing to do would be add a file system watcher.  Later
         private ConcurrentDictionary<ulong, ChannelInformation> channelCache = new ConcurrentDictionary<ulong, ChannelInformation>();
 
+        public async Task<IEnumerable<ulong>> GetAllChannelIds()
+        {
+            List<ulong> channelIds = new List<ulong>();
+
+            foreach (string file in Directory.EnumerateFiles("channeldata\\"))
+            {
+                string[] tokens = file.Split('.');
+                ulong channelId;
+                if (false != ulong.TryParse(tokens[0].Split('\\')[1], out channelId))
+                {
+                    channelIds.Add(channelId);
+                }
+            }
+
+            return channelIds;
+        }
+
         public async Task<ChannelInformation> GetChannelInformation(ulong channelId)
         {
             ChannelInformation channelInformation = null;

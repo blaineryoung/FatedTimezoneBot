@@ -5,6 +5,7 @@ using FatedTimezoneBot.Logic.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -121,9 +122,10 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
         private async Task<StringBuilder> BuildDiffForCharacter(ChannelCharacter character)
         {
             StringBuilder output = new StringBuilder();
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
-            CharacterInfo characterInfo = await this.characterFetcher.GetCharacterInformation(character.characterid);
             GearSetInfo setInfo = await this.gearSetInformationFetcher.GetGearSetInformation(new Guid(character.bisid));
+            CharacterInfo characterInfo = await this.characterFetcher.GetCharacterInformation(character.characterid, setInfo.job);
 
             GearSlotMap equippedGear = await this.gearSlotMapper.CreateGearSlotMap(characterInfo);
             GearSlotMap bisGear = await this.gearSlotMapper.CreateGearSlotMap(setInfo);

@@ -16,7 +16,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
         private ConcurrentDictionary<int, CharacterInfoCache> characterCache = new ConcurrentDictionary<int, CharacterInfoCache>();
         const int characterAgeMaxMinutes = 30;
 
-        public async Task<CharacterInfo> GetCharacterInformation(int characterId, int classId = 0)
+        public async Task<CharacterInfo> GetCharacterInformation(int characterId, int jobId = 0)
         {
 
             CharacterInfoCache characterInfo = null;
@@ -25,9 +25,9 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
             if (false == characterCache.TryGetValue(characterId, out characterInfo))
             {
                 CharacterInfo info = await this.GetCharacterInfoCall(characterId);
-                if((0 != classId) && (info.Character.ActiveClassJob.ClassID != classId))
+                if((0 != jobId) && (info.Character.ActiveClassJob.JobID != jobId))
                 {
-                    throw new CharacterNotFoundException($"Character {characterId} found, but active class not correct. Want {classId}, got {info.Character.ActiveClassJob.ClassID}");
+                    throw new CharacterNotFoundException($"Character {characterId} found, but active class not correct. Want {jobId}, got {info.Character.ActiveClassJob.ClassID}");
                 }
 
                 characterInfo = new CharacterInfoCache(info);
@@ -41,7 +41,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
             if (characterAge.TotalMinutes > characterAgeMaxMinutes)
             {
                 CharacterInfo info = await this.GetCharacterInfoCall(characterId);
-                if ((0 != classId) && (info.Character.ActiveClassJob.ClassID != classId))
+                if ((0 != jobId) && (info.Character.ActiveClassJob.JobID != jobId))
                 {
                     // don't update if class is wrong.
                     return characterInfo.CharacterInfo;

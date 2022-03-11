@@ -1,10 +1,12 @@
 ﻿using Discord;
 using FatedTimezoneBot.Logic.Information;
+using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,8 +70,12 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             await Parallel.ForEachAsync(players, options, async (player, token) =>
             {
                 foreach (ChannelCharacter character in player.characters)
-                {                    
-                    outputs.Add(await BuildDiffForCharacter(player.displayname, character));
+                {
+                    try
+                    {
+                        outputs.Add(await BuildDiffForCharacter(player.displayname, character));
+                    }
+                    catch (CharacterNotFoundException) { }
                 }
             });
 
@@ -102,6 +108,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                 }    
             }
 
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             StringBuilder commandOutput = new StringBuilder();
             // That was ugly, now build the actual output
             foreach (KeyValuePair<string, Dictionary<string, StringBuilder>> raidFloor in outputAccumulator.OrderBy(x => x.Key))
@@ -109,7 +116,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                 commandOutput.AppendLine($"__{raidFloor.Key}__");
                 foreach (KeyValuePair<string, StringBuilder> raidFloorItem in raidFloor.Value)
                 {
-                    commandOutput.AppendLine($"**{raidFloorItem.Key}**S: {raidFloorItem.Value}");
+                    commandOutput.AppendLine($"**{textInfo.ToTitleCase(raidFloorItem.Key)}**: {raidFloorItem.Value}");
                 }
 
                 commandOutput.AppendLine();
@@ -127,9 +134,9 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
         private async Task<Tuple<string, IEnumerable<Tuple<string, string>>>> BuildDiffForCharacter(string playerDisplayName, ChannelCharacter character)
         {
             StringBuilder output = new StringBuilder();
-
-            CharacterInfo characterInfo = await this.characterFetcher.GetCharacterInformation(character.characterid);
+    
             GearSetInfo setInfo = await this.gearSetInformationFetcher.GetGearSetInformation(new Guid(character.bisid));
+            CharacterInfo characterInfo = await this.characterFetcher.GetCharacterInformation(character.characterid, setInfo.job);
 
             GearSlotMap equippedGear = await this.gearSlotMapper.CreateGearSlotMap(characterInfo);
             GearSlotMap bisGear = await this.gearSlotMapper.CreateGearSlotMap(setInfo);

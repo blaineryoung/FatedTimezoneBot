@@ -14,6 +14,7 @@ using FatedTimezoneBot.Logic.Dispatcher;
 using FatedTimezoneBot.Logic.Dispatcher.Commands;
 using FatedTimezoneBot.Logic.Information.FileFetchers;
 using FatedTimezoneBot.Logic.Information.RestFetchers;
+using FatedTimezoneBot.Logic.Dispatcher.Events;
 
 namespace FatedTimezoneBot
 {
@@ -38,6 +39,9 @@ namespace FatedTimezoneBot
             IGearInformationFetcher gf = new GearFileInformationFetcher();
             IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
             IGearSetInformationFetcher gearSetInformationFetcher = new GearSetRestInformationFetcher();
+
+            IEventDispatcher eventDispatcher = new EventDispatcher(client.Client);
+            eventDispatcher.RegisterEvent(new RefreshCharactersEvent(fetcher, characterFetcher, gearSetInformationFetcher));
 
             md.AddHandler(new ConvertTimeCommand(fetcher));
             md.AddHandler(new RaidTimesCommand(fetcher));
