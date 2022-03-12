@@ -10,6 +10,6 @@ namespace FatedTimezoneBot.Logic.Information
     {
         Task<ChannelInformation> GetChannelInformation(ulong channelId);
 
-
+        Task<IEnumerable<ulong>> GetAllChannelIds();
     }
 }

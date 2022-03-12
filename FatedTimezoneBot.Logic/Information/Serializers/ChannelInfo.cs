@@ -30,5 +30,12 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public string username { get; set; }
         public string timezoneid { get; set; }
         public string displayname { get; set; }
+        public ChannelCharacter[] characters { get; set; }
+    }
+
+    public class ChannelCharacter
+    {
+        public int characterid { get; set; }
+        public string bisid { get; set; }
     }
 }

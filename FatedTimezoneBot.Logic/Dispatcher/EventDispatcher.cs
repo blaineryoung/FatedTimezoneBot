@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Dispatcher
 {
-    public class EventDispatcher
+    public class EventDispatcher : IEventDispatcher
     {
         IDiscordClient _client;
 
@@ -27,11 +27,24 @@ namespace FatedTimezoneBot.Logic.Dispatcher
 
             System.Timers.Timer t = new System.Timers.Timer(e.Interval);
             t.Elapsed += async (sender, a) => await e.HandleEvent();
+            t.AutoReset = true;
+            t.Enabled = true;
+            t.Start();
 
             EventInfo info = new EventInfo(e.Name, t, e);
             _events.Add(e.Name, info);
 
             t.Start();
+        }
+
+        public async Task FireEvent(string eventName)
+        {
+            IEnumerable<IEventHandler> events = _events.Where(x => x.Value.Name.Equals(eventName, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value.Handler);
+            foreach (IEventHandler e in events)
+            {
+                Console.WriteLine($"Executing event {e.Name}");
+                await e.HandleEvent();
+            }
         }
     }
 

@@ -14,5 +14,7 @@ namespace FatedTimezoneBot.Logic.Discord
         Task Connect();
 
         public event MessageReceivedHandler<IMessage> MessageReceived;
+
+        IDiscordClient Client { get; }
     }
 }
