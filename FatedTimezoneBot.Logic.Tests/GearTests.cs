@@ -68,5 +68,26 @@ namespace FatedTimezoneBot.Logic.Tests
 
             Assert.AreEqual(7, diffSet.Count);
         }
+
+        [Test]
+        public async Task GearDiffRingTest()
+        {
+            ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher();
+
+            CharacterInfo ci = await characterFetcher.GetCharacterInformation(38987737);
+            GearSlotMap characterGear = await gearSlotMapper.CreateGearSlotMap(ci);
+
+            GearSetInfo gsi = await gearSetInformationFetcher.GetGearSetInformation(new Guid("d483c05e-a2ef-4fe0-906f-b883566586af"));
+            GearSlotMap gearSlotGear = await gearSlotMapper.CreateGearSlotMap(gsi);
+
+            GearSlotMap diffSet = GearSlotMap.GenerateDiff(characterGear, gearSlotGear);
+
+            Assert.AreEqual(8, diffSet.Count);
+            Assert.AreEqual(1, diffSet.Rings.Count());
+            Assert.AreEqual(35243, diffSet.Rings.First().id);
+        }
     }
 }
