@@ -1,0 +1,193 @@
+﻿{
+  "id": "d483c05e-a2ef-4fe0-906f-b883566586af",
+  "jobAbbrev": "WHM",
+  "jobIconPath": "/jobs/WHM.svg",
+  "clanName": "Midlander",
+  "isOwner": false,
+  "name": "2.45 | 479 Chai",
+  "lastUpdate": "2022-03-08T00:31:24.439887Z",
+  "minItemLevel": 600,
+  "maxItemLevel": 605,
+  "minMateriaTier": 10,
+  "maxMateriaTier": 10,
+  "materia": {
+    "35215": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35217": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35218": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35219": {
+      "1": 33932,
+      "2": 33931
+    },
+    "35228": {
+      "1": 33932,
+      "2": 33931
+    },
+    "35233": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35253": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35290": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35291": {
+      "1": 33932,
+      "2": 33932
+    },
+    "35294": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35303": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35308": {
+      "1": 33932,
+      "2": 33931
+    },
+    "35313": {
+      "1": 33931,
+      "2": 33931
+    },
+    "35243R": {
+      "1": 33933,
+      "2": 33933
+    },
+    "35318L": {
+      "1": 33932,
+      "2": 33931
+    }
+  },
+  "totalParams": [
+    {
+      "id": "5",
+      "name": "MND",
+      "value": 2571
+    },
+    {
+      "id": "3",
+      "name": "VIT",
+      "value": 2481
+    },
+    {
+      "id": "21",
+      "name": "DEF",
+      "value": 1777
+    },
+    {
+      "id": "6",
+      "name": "PIE",
+      "value": 479
+    },
+    {
+      "id": "22",
+      "name": "DH",
+      "value": 796
+    },
+    {
+      "id": "27",
+      "name": "CRT",
+      "value": 2283
+    },
+    {
+      "id": "44",
+      "name": "DET",
+      "value": 1938
+    },
+    {
+      "id": "46",
+      "name": "SPS",
+      "value": 656
+    },
+    {
+      "name": "GCD",
+      "units": "s",
+      "value": 1.96
+    },
+    {
+      "name": "Average Item Level",
+      "value": 600
+    },
+    {
+      "name": "Critical Hit Multiplier",
+      "units": "%",
+      "value": 159.8
+    },
+    {
+      "name": "Critical Hit Rate",
+      "units": "%",
+      "value": 24.8
+    },
+    {
+      "name": "Defense Mitigation",
+      "units": "%",
+      "value": 14
+    },
+    {
+      "name": "Determination Multiplier",
+      "units": "%",
+      "value": 111.4
+    },
+    {
+      "name": "Direct Hit Rate",
+      "units": "%",
+      "value": 11.4
+    },
+    {
+      "name": "HP",
+      "value": 53961
+    },
+    {
+      "name": "MND Multiplier",
+      "units": "%",
+      "value": 1190
+    },
+    {
+      "name": "MP per Tick",
+      "value": 207
+    },
+    {
+      "name": "Spell Speed Multiplier",
+      "units": "%",
+      "value": 101.7
+    },
+    {
+      "id": 13,
+      "name": "Weapon Damage",
+      "value": 120
+    }
+  ],
+  "buffs": null,
+  "relics": null,
+  "patch": 6.0,
+  "job": 24,
+  "clan": 1,
+  "weapon": 35253,
+  "head": 35215,
+  "body": 35291,
+  "hands": 35217,
+  "legs": 35218,
+  "feet": 35294,
+  "offHand": null,
+  "ears": 35303,
+  "neck": 35233,
+  "wrists": 35313,
+  "fingerL": 35318,
+  "fingerR": 35243,
+  "food": 549,
+  "medicine": null
+}
