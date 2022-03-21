@@ -23,6 +23,16 @@ namespace FatedTimezoneBot.Logic.Tests
         }
 
         [Test]
+        public async Task MissingGearTest()
+        {
+            IGearInformationFetcher gf = new GearFileInformationFetcher();
+
+            GearItem gi = await gf.GetGearInformation(42);
+
+            Assert.AreEqual(gi.name, "Unknown");
+        }
+
+        [Test]
         public async Task GetGearSetTest()
         {
             IGearInformationFetcher gf = new GearFileInformationFetcher();

@@ -34,7 +34,18 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
                 GearMap = new ReadOnlyDictionary<int, GearItem>(map);
             }
 
-            return GearMap[gearId];
+            GearItem item = null;
+
+            if (false == GearMap.TryGetValue(gearId, out item))
+            {
+                item = new GearItem() 
+                { 
+                    id = gearId,
+                    name = "Unknown",
+                };
+            }
+
+            return item;
         }
     }
 }
