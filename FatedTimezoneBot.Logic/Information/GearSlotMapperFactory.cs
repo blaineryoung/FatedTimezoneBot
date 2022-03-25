@@ -21,9 +21,8 @@ namespace FatedTimezoneBot.Logic.Information
 
         public async Task<GearSlotMap> CreateGearSlotMap(GearSetInfo setInfo)
         {
-            Dictionary<string, GearItem> slotGear = new Dictionary<string, GearItem>();
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-            List<GearItem> rings = new List<GearItem>();
+            List<GearItem> gear = new List<GearItem>();
 
             IEnumerable<PropertyInfo> props = setInfo.GetType().GetProperties().Where(
                 prop => Attribute.IsDefined(prop, typeof(SlotAttribute)));
@@ -36,28 +35,19 @@ namespace FatedTimezoneBot.Logic.Information
                 {
                     int id = (int)value;
                     GearItem item = await gearInformationFetcher.GetGearInformation(id);
-                    string name = textInfo.ToTitleCase(item.slotName);
-                    if (name.Equals("Finger", StringComparison.OrdinalIgnoreCase))
-                    {
-                        rings.Add(item);
-                    }
-                    else
-                    {
-                        slotGear[name] = item;
-                    }
+                    gear.Add(item);
                 }
             }
 
-            return new GearSlotMap(new ReadOnlyDictionary<string, GearItem>(slotGear), rings);
+            return new GearSlotMap(gear);
         }
 
         public async  Task<GearSlotMap> CreateGearSlotMap(CharacterInfo characterInfo)
         {
-            Dictionary<string, GearItem> slotGear = new Dictionary<string, GearItem>();
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
             IEnumerable<PropertyInfo> props = characterInfo.Character.GearSet.Gear.GetType().GetProperties();
-            List<GearItem> rings = new List<GearItem>();
+            List<GearItem> gear = new List<GearItem>();
 
             foreach (PropertyInfo prop in props)
             {
@@ -67,19 +57,11 @@ namespace FatedTimezoneBot.Logic.Information
                 {
                     CharacterGearItem cgi = (CharacterGearItem)value;
                     GearItem item = await gearInformationFetcher.GetGearInformation(cgi.ID);
-                    string name = textInfo.ToTitleCase(item.slotName);
-                    if (name.Equals("Finger", StringComparison.OrdinalIgnoreCase))
-                    {
-                        rings.Add(item);
-                    }
-                    else
-                    {
-                        slotGear[name] = item;
-                    }
+                    gear.Add(item);
                 }
             }
 
-            return new GearSlotMap(new ReadOnlyDictionary<string, GearItem>(slotGear), rings);
+            return new GearSlotMap(gear);
         }
     }
 }

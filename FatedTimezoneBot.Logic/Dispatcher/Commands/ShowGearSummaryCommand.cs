@@ -152,9 +152,9 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 
             List<Tuple<string, string>> missingItems = new List<Tuple<string, string>>();
 
-            foreach (string slot in missingGear.Slots)
+            foreach (GearItem slot in missingGear.Gear)
             {
-                missingItems.Add(GameUtilities.GetGearSourceAndType(missingGear[slot]));
+                missingItems.Add(GameUtilities.GetGearSourceAndType(slot));
             }
 
             string displayName = $"{characterInfo.Character.Name} ({playerDisplayName})";

@@ -22,7 +22,7 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         }
     }
 
-    public class GearItem
+    public class GearItem : IEquatable<GearItem>
     {
         public int id { get; set; }
         public string name { get; set; }
@@ -66,5 +66,12 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public string jobName { get; set; }
         public int itemUICategory { get; set; }
         public int jobCategory { get; set; }
+
+        public bool Equals(GearItem? other)
+        {
+            if (other == null) return false;
+
+            return other.id == id;
+        }
     }
 }
