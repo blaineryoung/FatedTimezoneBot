@@ -42,8 +42,9 @@ namespace FatedTimezoneBot.Logic.Tests
             GearSetInfo gsi = await gearSetInformationFetcher.GetGearSetInformation(new Guid("30122448-70c8-421c-bd8c-820e2905858b"));
 
             GearSlotMap gsm = await gearSlotMapper.CreateGearSlotMap(gsi);
+            GearItem body = gsm.Gear.Where(x => 0 == string.Compare(x.name, "Asphodelos Chiton of Healing", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
-            Assert.AreEqual(gsm["Body"].name, "Asphodelos Chiton of Healing");
+            Assert.IsNotNull(body);
         }
 
         [Test]
@@ -57,7 +58,9 @@ namespace FatedTimezoneBot.Logic.Tests
 
             GearSlotMap gsm = await gearSlotMapper.CreateGearSlotMap(ci);
 
-            Assert.AreEqual(gsm["Body"].name, "Limbo Chiton of Healing");
+            GearItem body = gsm.Gear.Where(x => 0 == string.Compare(x.name, "Limbo Chiton of Healing", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+            Assert.IsNotNull(body);
         }
 
         [Test]
@@ -96,8 +99,6 @@ namespace FatedTimezoneBot.Logic.Tests
             GearSlotMap diffSet = GearSlotMap.GenerateDiff(characterGear, gearSlotGear);
 
             Assert.AreEqual(8, diffSet.Count);
-            Assert.AreEqual(1, diffSet.Rings.Count());
-            Assert.AreEqual(35243, diffSet.Rings.First().id);
         }
     }
 }

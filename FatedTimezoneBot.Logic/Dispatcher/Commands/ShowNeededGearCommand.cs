@@ -148,9 +148,9 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             else
             {
-                foreach (string slot in missingGear.Slots)
+                foreach (GearItem missing in missingGear.Gear)
                 {
-                    string source = GameUtilities.GetGearSource(missingGear[slot]);
+                    string source = GameUtilities.GetGearSource(missing);
 
                     int currentCount = 0;
                     if (sourceCounts.ContainsKey(source))
@@ -161,7 +161,9 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                     currentCount++;
                     sourceCounts[source] = currentCount;
 
-                    output.AppendLine($"{slot} - {missingGear[slot].name} ({source})");
+                    string slotName = textInfo.ToTitleCase(missing.slotName);
+
+                    output.AppendLine($"{slotName} - {missing.name} ({source})");
                 }
 
                 output.AppendLine();
