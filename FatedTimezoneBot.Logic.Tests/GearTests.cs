@@ -100,5 +100,24 @@ namespace FatedTimezoneBot.Logic.Tests
 
             Assert.AreEqual(8, diffSet.Count);
         }
+
+        [Test]
+        public async Task UnknownGearTest()
+        {
+            ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher();
+
+            CharacterInfo ci = await characterFetcher.GetCharacterInformation(42);
+            GearSlotMap characterGear = await gearSlotMapper.CreateGearSlotMap(ci);
+
+            GearSetInfo gsi = await gearSetInformationFetcher.GetGearSetInformation(new Guid("d483c05e-a2ef-4fe0-906f-b883566586af"));
+            GearSlotMap gearSlotGear = await gearSlotMapper.CreateGearSlotMap(gsi);
+
+            GearSlotMap diffSet = GearSlotMap.GenerateDiff(characterGear, gearSlotGear);
+
+            Assert.AreEqual(6, diffSet.Count);
+        }
     }
 }

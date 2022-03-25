@@ -1,0 +1,612 @@
+﻿{
+  "Achievements": null,
+  "AchievementsPublic": null,
+  "Character": {
+    "ActiveClassJob": {
+      "ClassID": 40,
+      "ExpLevel": 0,
+      "ExpLevelMax": 0,
+      "ExpLevelTogo": 0,
+      "IsSpecialised": false,
+      "JobID": 40,
+      "Level": 90,
+      "Name": "sage \/ sage",
+      "UnlockedState": {
+        "ID": 40,
+        "Name": "Sage"
+      }
+    },
+    "Avatar": "https:\/\/img2.finalfantasyxiv.com\/f\/6442f4e929aec68ff28c101a63d93215_58a84e851e55175d22158ca97af58a1ffc0_96x96.jpg?1646440564",
+    "Bio": "fflogs-xPKFchAJ6n7BCdRvWMDg2r8paLqHQj1N",
+    "ClassJobs": [
+      {
+        "ClassID": 1,
+        "ExpLevel": 470237,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5521763,
+        "IsSpecialised": false,
+        "JobID": 19,
+        "Level": 80,
+        "Name": "gladiator \/ paladin",
+        "UnlockedState": {
+          "ID": 19,
+          "Name": "Paladin"
+        }
+      },
+      {
+        "ClassID": 3,
+        "ExpLevel": 0,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5992000,
+        "IsSpecialised": false,
+        "JobID": 21,
+        "Level": 80,
+        "Name": "marauder \/ warrior",
+        "UnlockedState": {
+          "ID": 21,
+          "Name": "Warrior"
+        }
+      },
+      {
+        "ClassID": 32,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 32,
+        "Level": 90,
+        "Name": "dark knight \/ dark knight",
+        "UnlockedState": {
+          "ID": 32,
+          "Name": "Dark Knight"
+        }
+      },
+      {
+        "ClassID": 37,
+        "ExpLevel": 0,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5992000,
+        "IsSpecialised": false,
+        "JobID": 37,
+        "Level": 80,
+        "Name": "gunbreaker \/ gunbreaker",
+        "UnlockedState": {
+          "ID": 37,
+          "Name": "Gunbreaker"
+        }
+      },
+      {
+        "ClassID": 6,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 24,
+        "Level": 90,
+        "Name": "conjurer \/ white mage",
+        "UnlockedState": {
+          "ID": 24,
+          "Name": "White Mage"
+        }
+      },
+      {
+        "ClassID": 26,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 28,
+        "Level": 90,
+        "Name": "arcanist \/ scholar",
+        "UnlockedState": {
+          "ID": 28,
+          "Name": "Scholar"
+        }
+      },
+      {
+        "ClassID": 33,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 33,
+        "Level": 90,
+        "Name": "astrologian \/ astrologian",
+        "UnlockedState": {
+          "ID": 33,
+          "Name": "Astrologian"
+        }
+      },
+      {
+        "ClassID": 40,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 40,
+        "Level": 90,
+        "Name": "sage \/ sage",
+        "UnlockedState": {
+          "ID": 40,
+          "Name": "Sage"
+        }
+      },
+      {
+        "ClassID": 2,
+        "ExpLevel": 0,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5992000,
+        "IsSpecialised": false,
+        "JobID": 20,
+        "Level": 80,
+        "Name": "pugilist \/ monk",
+        "UnlockedState": {
+          "ID": 20,
+          "Name": "Monk"
+        }
+      },
+      {
+        "ClassID": 4,
+        "ExpLevel": 924,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5991076,
+        "IsSpecialised": false,
+        "JobID": 22,
+        "Level": 80,
+        "Name": "lancer \/ dragoon",
+        "UnlockedState": {
+          "ID": 22,
+          "Name": "Dragoon"
+        }
+      },
+      {
+        "ClassID": 29,
+        "ExpLevel": 9945,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5982055,
+        "IsSpecialised": false,
+        "JobID": 30,
+        "Level": 80,
+        "Name": "rogue \/ ninja",
+        "UnlockedState": {
+          "ID": 30,
+          "Name": "Ninja"
+        }
+      },
+      {
+        "ClassID": 34,
+        "ExpLevel": 0,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5992000,
+        "IsSpecialised": false,
+        "JobID": 34,
+        "Level": 80,
+        "Name": "samurai \/ samurai",
+        "UnlockedState": {
+          "ID": 34,
+          "Name": "Samurai"
+        }
+      },
+      {
+        "ClassID": 39,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 39,
+        "Level": 0,
+        "Name": "reaper \/ reaper",
+        "UnlockedState": {
+          "ID": 39,
+          "Name": "Reaper"
+        }
+      },
+      {
+        "ClassID": 5,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 23,
+        "Level": 90,
+        "Name": "archer \/ bard",
+        "UnlockedState": {
+          "ID": 23,
+          "Name": "Bard"
+        }
+      },
+      {
+        "ClassID": 31,
+        "ExpLevel": 0,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5992000,
+        "IsSpecialised": false,
+        "JobID": 31,
+        "Level": 80,
+        "Name": "machinist \/ machinist",
+        "UnlockedState": {
+          "ID": 31,
+          "Name": "Machinist"
+        }
+      },
+      {
+        "ClassID": 38,
+        "ExpLevel": 0,
+        "ExpLevelMax": 5992000,
+        "ExpLevelTogo": 5992000,
+        "IsSpecialised": false,
+        "JobID": 38,
+        "Level": 80,
+        "Name": "dancer \/ dancer",
+        "UnlockedState": {
+          "ID": 38,
+          "Name": "Dancer"
+        }
+      },
+      {
+        "ClassID": 7,
+        "ExpLevel": 6315820,
+        "ExpLevelMax": 7205000,
+        "ExpLevelTogo": 889180,
+        "IsSpecialised": false,
+        "JobID": 25,
+        "Level": 83,
+        "Name": "thaumaturge \/ black mage",
+        "UnlockedState": {
+          "ID": 25,
+          "Name": "Black Mage"
+        }
+      },
+      {
+        "ClassID": 26,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 27,
+        "Level": 90,
+        "Name": "arcanist \/ summoner",
+        "UnlockedState": {
+          "ID": 27,
+          "Name": "Summoner"
+        }
+      },
+      {
+        "ClassID": 35,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 35,
+        "Level": 90,
+        "Name": "red mage \/ red mage",
+        "UnlockedState": {
+          "ID": 35,
+          "Name": "Red Mage"
+        }
+      },
+      {
+        "ClassID": 36,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 36,
+        "Level": 70,
+        "Name": "blue mage \/ blue mage",
+        "UnlockedState": {
+          "ID": null,
+          "Name": "Blue Mage (Limited Job)"
+        }
+      },
+      {
+        "ClassID": 8,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 8,
+        "Level": 90,
+        "Name": "carpenter \/ carpenter",
+        "UnlockedState": {
+          "ID": 8,
+          "Name": "Carpenter"
+        }
+      },
+      {
+        "ClassID": 9,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 9,
+        "Level": 90,
+        "Name": "blacksmith \/ blacksmith",
+        "UnlockedState": {
+          "ID": 9,
+          "Name": "Blacksmith"
+        }
+      },
+      {
+        "ClassID": 10,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": true,
+        "JobID": 10,
+        "Level": 90,
+        "Name": "armorer \/ armorer",
+        "UnlockedState": {
+          "ID": 10,
+          "Name": "Armorer"
+        }
+      },
+      {
+        "ClassID": 11,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": true,
+        "JobID": 11,
+        "Level": 90,
+        "Name": "goldsmith \/ goldsmith",
+        "UnlockedState": {
+          "ID": 11,
+          "Name": "Goldsmith"
+        }
+      },
+      {
+        "ClassID": 12,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 12,
+        "Level": 90,
+        "Name": "leatherworker \/ leatherworker",
+        "UnlockedState": {
+          "ID": 12,
+          "Name": "Leatherworker"
+        }
+      },
+      {
+        "ClassID": 13,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 13,
+        "Level": 90,
+        "Name": "weaver \/ weaver",
+        "UnlockedState": {
+          "ID": 13,
+          "Name": "Weaver"
+        }
+      },
+      {
+        "ClassID": 14,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": true,
+        "JobID": 14,
+        "Level": 90,
+        "Name": "alchemist \/ alchemist",
+        "UnlockedState": {
+          "ID": 14,
+          "Name": "Alchemist"
+        }
+      },
+      {
+        "ClassID": 15,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 15,
+        "Level": 90,
+        "Name": "culinarian \/ culinarian",
+        "UnlockedState": {
+          "ID": 15,
+          "Name": "Culinarian"
+        }
+      },
+      {
+        "ClassID": 16,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 16,
+        "Level": 90,
+        "Name": "miner \/ miner",
+        "UnlockedState": {
+          "ID": 16,
+          "Name": "Miner"
+        }
+      },
+      {
+        "ClassID": 17,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 17,
+        "Level": 90,
+        "Name": "botanist \/ botanist",
+        "UnlockedState": {
+          "ID": 17,
+          "Name": "Botanist"
+        }
+      },
+      {
+        "ClassID": 18,
+        "ExpLevel": 0,
+        "ExpLevelMax": 0,
+        "ExpLevelTogo": 0,
+        "IsSpecialised": false,
+        "JobID": 18,
+        "Level": 90,
+        "Name": "fisher \/ fisher",
+        "UnlockedState": {
+          "ID": 18,
+          "Name": "Fisher"
+        }
+      }
+    ],
+    "ClassJobsBozjan": {
+      "Level": 14,
+      "Mettle": 417279,
+      "Name": "Resistance Rank"
+    },
+    "ClassJobsElemental": {
+      "ExpLevel": 22919,
+      "ExpLevelMax": 36128,
+      "ExpLevelTogo": 13209,
+      "Level": 6,
+      "Name": "Elemental Level"
+    },
+    "DC": "Aether",
+    "FreeCompanyId": "9231394073691130016",
+    "FreeCompanyName": "Fated Circle",
+    "GearSet": {
+      "Attributes": {
+        "1": 236,
+        "2": 389,
+        "3": 2257,
+        "4": 451,
+        "5": 2454,
+        "6": 474,
+        "7": 48518,
+        "8": 10000,
+        "19": 400,
+        "20": 236,
+        "21": 1741,
+        "22": 400,
+        "24": 3045,
+        "27": 1907,
+        "33": 2454,
+        "34": 2454,
+        "44": 1908,
+        "45": 400,
+        "46": 1332
+      },
+      "ClassID": 40,
+      "Gear": {
+        "Body": {
+          "Creator": null,
+          "Dye": 5738,
+          "ID": 13,
+          "Materia": [ 33933, 33933 ],
+          "Mirage": 24608
+        },
+        "Bracelets": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35313,
+          "Materia": [ 33942, 33942 ],
+          "Mirage": 9294
+        },
+        "Earrings": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35303,
+          "Materia": [ 33942, 33942 ],
+          "Mirage": 4202
+        },
+        "Feet": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35294,
+          "Materia": [ 33942, 33942 ],
+          "Mirage": 24611
+        },
+        "Hands": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35142,
+          "Materia": [ 33942, 33942 ],
+          "Mirage": 24609
+        },
+        "Head": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35140,
+          "Materia": [ 33942, 33930 ],
+          "Mirage": 10152
+        },
+        "Legs": {
+          "Creator": null,
+          "Dye": 5761,
+          "ID": 35143,
+          "Materia": [ 33942, 33942 ],
+          "Mirage": 14831
+        },
+        "MainHand": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35037,
+          "Materia": [ 33942, 33942, 33942, 33929, 33917 ],
+          "Mirage": 34942
+        },
+        "Necklace": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35233,
+          "Materia": [ 33942, 33930 ],
+          "Mirage": 9292
+        },
+        "Ring1": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35318,
+          "Materia": [ 33942, 33942 ],
+          "Mirage": 9295
+        },
+        "Ring2": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 35093,
+          "Materia": [ 33942, 33942, 33929, 33929, 33929 ],
+          "Mirage": 9295
+        },
+        "SoulCrystal": {
+          "Creator": null,
+          "Dye": null,
+          "ID": 33355,
+          "Materia": [],
+          "Mirage": null
+        }
+      },
+      "GearKey": "40_40",
+      "JobID": 40,
+      "Level": 90
+    },
+    "Gender": 1,
+    "GrandCompany": {
+      "NameID": 1,
+      "RankID": 11
+    },
+    "GuardianDeity": 12,
+    "ID": 19442264,
+    "Lang": null,
+    "Name": "Dakt Cole",
+    "Nameday": "25th Sun of the 4th Astral Moon",
+    "ParseDate": 1646443901,
+    "Portrait": "https:\/\/img2.finalfantasyxiv.com\/f\/6442f4e929aec68ff28c101a63d93215_58a84e851e55175d22158ca97af58a1ffl0_640x873.jpg?1646440564",
+    "PvPTeamId": null,
+    "Race": 1,
+    "Server": "Siren",
+    "Title": 14,
+    "TitleTop": true,
+    "Town": 1,
+    "Tribe": 1
+  },
+  "FreeCompany": null,
+  "FreeCompanyMembers": null,
+  "Friends": null,
+  "FriendsPublic": null,
+  "Minions": null,
+  "Mounts": null,
+  "PvPTeam": null
+}
