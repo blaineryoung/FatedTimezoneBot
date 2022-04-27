@@ -16,6 +16,8 @@ namespace FatedTimezoneBot.Logic.Information
 
         public IEnumerable<ChannelRaid> RaidInfo => channelInfo.raids;
 
+        public IEnumerable<ChannelResponse> CustomResponse => channelInfo.responses; 
+
         public ulong ChannelId { get; }
 
         internal ChannelInformation(ChannelInfo ci)
