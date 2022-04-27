@@ -1,4 +1,5 @@
 ﻿using FatedTimezoneBot.Logic.Information.Serializers;
+using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -13,6 +14,12 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
         // This is a cheesy in memory cache.  If this ever gets big, we'll need to do something better. 
         // It also doesn't handle file changes.  Simple thing to do would be add a file system watcher.  Later
         private ConcurrentDictionary<ulong, ChannelInformation> channelCache = new ConcurrentDictionary<ulong, ChannelInformation>();
+        private ILogger _logger;
+
+        public ChannelFileInformationFetcher(ILogger logger)
+        {
+            this._logger = logger;
+        }
 
         public async Task<IEnumerable<ulong>> GetAllChannelIds()
         {
@@ -25,6 +32,7 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
                 if (false != ulong.TryParse(tokens[0].Split('\\')[1], out channelId))
                 {
                     channelIds.Add(channelId);
+                    this._logger.Information("Added channel {ChannelId}", channelId);
                 }
             }
 

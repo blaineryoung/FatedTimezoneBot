@@ -1,4 +1,5 @@
 ﻿using FatedTimezoneBot.Logic.Information.Serializers;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,12 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
     public class GearFileInformationFetcher : IGearInformationFetcher
     {
         public IReadOnlyDictionary<int, GearItem> GearMap { get; private set; }
+        public ILogger _logger;
+
+        public GearFileInformationFetcher(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public async Task<GearItem> GetGearInformation(int gearId)
         {

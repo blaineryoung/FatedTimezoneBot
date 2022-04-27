@@ -1,6 +1,7 @@
 ﻿using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
+using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -17,9 +18,11 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
         // This is a cheesy in memory cache.  If this ever gets big, we'll need to do something better. 
         // It also doesn't handle file changes.  Simple thing to do would be add a file system watcher.  Later
         private ConcurrentDictionary<Guid, GearSetInfo> gearSetCache = new ConcurrentDictionary<Guid, GearSetInfo>();
+        private ILogger _logger;
 
-        public GearSetRestInformationFetcher()
+        public GearSetRestInformationFetcher(ILogger logger)
         {
+            _logger = logger;
         }
 
         public async Task<GearSetInfo> GetGearSetInformation(Guid gearSetId)
@@ -56,7 +59,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
                 }
                 else
                 {
-                    Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+                    _logger.Warning("GearSet id {gearSetId} not found - {response.StatusCode}, {response.ReasonPhrase}", gearSetId, (int)response.StatusCode, response.ReasonPhrase);
                     throw new GearNotFoundException($"GearSet id {gearSetId} not found - {response.StatusCode}, {response.ReasonPhrase}");
                 }
             }
