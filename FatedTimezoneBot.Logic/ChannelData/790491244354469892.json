@@ -12,6 +12,18 @@
       "time": "5:00 pm"
     }
   ],
+  "responses": [
+    {
+      "searchstring": "Cero",
+      "response": ":thumbsup: Cero must die :thumbsup:",
+      "frequency": 5
+    },
+    {
+      "searchstring": "Ultimate Raider",
+      "response": "Dakt is the ultimate raider!",
+      "frequency": 100
+    }
+  ],
   "players": [
     {
       "username": "DaktCole#3699",

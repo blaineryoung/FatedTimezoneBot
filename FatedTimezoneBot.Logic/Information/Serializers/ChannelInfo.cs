@@ -12,10 +12,19 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public string id { get; set; }
         public ChannelRaid[] raids { get; set; }
         public ChannelPlayer[] players { get; set; }
+        public ChannelResponse[] responses { get; set; }
         public static ChannelInfo DeserializeChannelInfo(string channelJson)
         {
             return JsonConvert.DeserializeObject<ChannelInfo>(channelJson);
         }
+    }
+
+    public class ChannelResponse
+    {
+        public string searchstring { get; set; }
+        public string response  { get; set; }
+
+        public int frequency { get; set; }
     }
 
     public class ChannelRaid
