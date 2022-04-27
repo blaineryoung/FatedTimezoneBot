@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +13,16 @@ namespace FatedTimezoneBot.Logic.Discord
     {
         private DiscordSocketClient _client;
         private string _token;
+        private ILogger _logger;
 
         public event IDiscordClientWrapper.MessageReceivedHandler<IMessage> MessageReceived;
 
         public IDiscordClient Client => _client;
 
-        public DiscordClient(string token)
+        public DiscordClient(string token, ILogger logger)
         {
             _token = token;
+            _logger = logger;
         }
 
         public async Task Connect()
@@ -47,7 +50,7 @@ namespace FatedTimezoneBot.Logic.Discord
 
         private Task Log(LogMessage msg)
         {
-            Console.WriteLine(msg.ToString());
+            _logger.Information(msg.ToString());
             return Task.CompletedTask;
         }
     }

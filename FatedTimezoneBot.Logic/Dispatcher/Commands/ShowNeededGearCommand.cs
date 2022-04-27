@@ -2,6 +2,7 @@
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Utility;
+using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -23,13 +24,15 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
         const string NeededGearCommandString = "!neededgear";
 
         ICollection<TimeZoneInfo> timeZones;
+        private ILogger _logger;
 
         public ShowNeededGearCommand(
             IChannelInformationFetcher channelInformationFetcher,
             ICharacterInformationFetcher characterInformationFetcher,
             IGearInformationFetcher gearInformationFetcher,
             IGearSlotMapperFactory gearSlotMapperFactory,
-            IGearSetInformationFetcher gearSetInformationFetcher)
+            IGearSetInformationFetcher gearSetInformationFetcher, 
+            ILogger logger)
         {
             this.timeZones = TimeZoneInfo.GetSystemTimeZones();
             this.channelInformationFetcher = channelInformationFetcher;
@@ -37,6 +40,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             this.gearInformationFetcher = gearInformationFetcher;
             this.gearSlotMapper = gearSlotMapperFactory;
             this.gearSetInformationFetcher = gearSetInformationFetcher;
+            this._logger = logger;
         }
 
         public async Task<bool> HandleCommand(IMessage message)
@@ -53,8 +57,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Got exception {e.Message} when attempting to get channel information for {message.Channel.Id}");
-                Console.WriteLine(e.StackTrace);
+                _logger.Warning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
 
                 return false;
             }
@@ -105,7 +108,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"Could not build diff for character {character.characterid}: {e.Message}");
+                        _logger.Warning(e, "Could not build diff for character {characterID}", character.characterid);
                     }
                 }
                 output.AppendLine();

@@ -15,6 +15,7 @@ using FatedTimezoneBot.Logic.Dispatcher.Commands;
 using FatedTimezoneBot.Logic.Information.FileFetchers;
 using FatedTimezoneBot.Logic.Information.RestFetchers;
 using FatedTimezoneBot.Logic.Dispatcher.Events;
+using Serilog;
 
 namespace FatedTimezoneBot
 {
@@ -29,25 +30,27 @@ namespace FatedTimezoneBot
             var token = File.ReadAllText(tokenFile);
 
             // Do setup stuff.  Normally this would be in the ioc file.
-            FatedTimezoneBot.Logic.Discord.IDiscordClientWrapper client = new DiscordClient(token);
+            ILogger logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+
+            FatedTimezoneBot.Logic.Discord.IDiscordClientWrapper client = new DiscordClient(token, logger);
             await client.Connect();
 
-            MessageDispatcher md = new MessageDispatcher(client);
+            MessageDispatcher md = new MessageDispatcher(client, logger);
 
-            IChannelInformationFetcher fetcher = new ChannelFileInformationFetcher();
-            ICharacterInformationFetcher characterFetcher = new CharacterRestInformationFetcher();
-            IGearInformationFetcher gf = new GearFileInformationFetcher();
-            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
-            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetRestInformationFetcher();
+            IChannelInformationFetcher fetcher = new ChannelFileInformationFetcher(logger);
+            ICharacterInformationFetcher characterFetcher = new CharacterRestInformationFetcher(logger);
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf, logger);
+            IGearSetInformationFetcher gearSetInformationFetcher = new GearSetRestInformationFetcher(logger);
 
-            IEventDispatcher eventDispatcher = new EventDispatcher(client.Client);
-            eventDispatcher.RegisterEvent(new RefreshCharactersEvent(fetcher, characterFetcher, gearSetInformationFetcher));
+            IEventDispatcher eventDispatcher = new EventDispatcher(client.Client, logger);
+            eventDispatcher.RegisterEvent(new RefreshCharactersEvent(fetcher, characterFetcher, gearSetInformationFetcher, logger));
 
-            md.AddHandler(new ConvertTimeCommand(fetcher));
-            md.AddHandler(new RaidTimesCommand(fetcher));
-            md.AddHandler(new CustomResponseCommand(fetcher));
-            md.AddHandler(new ShowNeededGearCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher));
-            md.AddHandler(new ShowGearSummaryCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher));
+            md.AddHandler(new ConvertTimeCommand(fetcher, logger));
+            md.AddHandler(new RaidTimesCommand(fetcher, logger));
+            md.AddHandler(new CustomResponseCommand(fetcher, logger));
+            md.AddHandler(new ShowNeededGearCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher, logger));
+            md.AddHandler(new ShowGearSummaryCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher, logger));
 
             // Block this task until the program is closed.
             await Task.Delay(-1);

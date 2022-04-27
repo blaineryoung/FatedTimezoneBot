@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Information.FileFetchers;
+using Serilog;
 
 namespace FatedTimezoneBot.Logic.Tests
 {
     public class GearTests
     {
+        ILogger logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+
         [Test]
         public async Task GetGearTest()
         {
-            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
 
             GearItem gi = await gf.GetGearInformation(35271);
 
@@ -25,7 +28,7 @@ namespace FatedTimezoneBot.Logic.Tests
         [Test]
         public async Task MissingGearTest()
         {
-            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
 
             GearItem gi = await gf.GetGearInformation(42);
 
@@ -35,9 +38,9 @@ namespace FatedTimezoneBot.Logic.Tests
         [Test]
         public async Task GetGearSetTest()
         {
-            IGearInformationFetcher gf = new GearFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
             IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher();
-            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf, logger);
 
             GearSetInfo gsi = await gearSetInformationFetcher.GetGearSetInformation(new Guid("30122448-70c8-421c-bd8c-820e2905858b"));
 
@@ -51,8 +54,8 @@ namespace FatedTimezoneBot.Logic.Tests
         public async Task GetCharacterGearTest()
         {
             ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
-            IGearInformationFetcher gf = new GearFileInformationFetcher();
-            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf, logger);
 
             CharacterInfo ci = await characterFetcher.GetCharacterInformation(19442264);
 
@@ -67,8 +70,8 @@ namespace FatedTimezoneBot.Logic.Tests
         public async Task GearDiffTEst()
         {
             ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
-            IGearInformationFetcher gf = new GearFileInformationFetcher();
-            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf, logger);
             IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher();
 
             CharacterInfo ci = await characterFetcher.GetCharacterInformation(19442264);
@@ -86,8 +89,8 @@ namespace FatedTimezoneBot.Logic.Tests
         public async Task GearDiffRingTest()
         {
             ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
-            IGearInformationFetcher gf = new GearFileInformationFetcher();
-            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf, logger);
             IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher();
 
             CharacterInfo ci = await characterFetcher.GetCharacterInformation(38987737);
@@ -105,8 +108,8 @@ namespace FatedTimezoneBot.Logic.Tests
         public async Task UnknownGearTest()
         {
             ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
-            IGearInformationFetcher gf = new GearFileInformationFetcher();
-            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf);
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf, logger);
             IGearSetInformationFetcher gearSetInformationFetcher = new GearSetFileInformationFetcher();
 
             CharacterInfo ci = await characterFetcher.GetCharacterInformation(42);

@@ -1,6 +1,7 @@
 ﻿using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +19,18 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Events
         IChannelInformationFetcher channelInformationFetcher = null;
         ICharacterInformationFetcher characterInformationFetcher = null;
         IGearSetInformationFetcher gearSetInformationFetcher = null;
+        ILogger _logger;
         
         public RefreshCharactersEvent(
             IChannelInformationFetcher channelInformationFetcher,
             ICharacterInformationFetcher characterInformationFetcher,
-            IGearSetInformationFetcher gearSetInformationFetcher)
+            IGearSetInformationFetcher gearSetInformationFetcher,
+            ILogger logger)
         {
             this.channelInformationFetcher = channelInformationFetcher;
             this.characterInformationFetcher = characterInformationFetcher;
             this.gearSetInformationFetcher = gearSetInformationFetcher;
+            this._logger = logger;
         }
 
         public async Task HandleEvent()
@@ -45,11 +49,11 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Events
                         {
                             GearSetInfo gearSetInfo = await this.gearSetInformationFetcher.GetGearSetInformation(new Guid(c.bisid));
                             CharacterInfo characterInfo = await this.characterInformationFetcher.GetCharacterInformation(c.characterid, gearSetInfo.job);
-                            Console.WriteLine($"Refreshed {characterInfo.Character.Name}");
+                            _logger.Information("Refreshed {characterName}", characterInfo.Character.Name);
                         }
                         catch (CharacterNotFoundException e) 
                         {
-                            Console.WriteLine($"Could not refresh {player.displayname} - {c.characterid} - {e.Message}");
+                            _logger.Warning("Could not refresh {playerName} - {characterid} - {Message}", player.displayname, c.characterid, e.Message);
                         } // Not a big deal, just won't update.
 
                         await Task.Delay(1300);

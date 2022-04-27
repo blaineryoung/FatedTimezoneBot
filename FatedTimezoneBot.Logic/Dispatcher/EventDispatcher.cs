@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace FatedTimezoneBot.Logic.Dispatcher
         IDiscordClient _client;
 
         private Dictionary<string, EventInfo> _events = new Dictionary<string, EventInfo>();
+        private ILogger _logger;
 
-        public EventDispatcher(IDiscordClient client)
+        public EventDispatcher(IDiscordClient client, ILogger logger)
         {
             this._client = client;
+            this._logger = logger;
         }
 
         public void RegisterEvent(IEventHandler e)
@@ -42,7 +45,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher
             IEnumerable<IEventHandler> events = _events.Where(x => x.Value.Name.Equals(eventName, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value.Handler);
             foreach (IEventHandler e in events)
             {
-                Console.WriteLine($"Executing event {e.Name}");
+                _logger.Information("Executing event {eventname}", e.Name);
                 await e.HandleEvent();
             }
         }

@@ -1,4 +1,5 @@
 ﻿using FatedTimezoneBot.Logic.Information.Serializers;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,10 +14,12 @@ namespace FatedTimezoneBot.Logic.Information
     public class GearSlotMapperFactory : IGearSlotMapperFactory
     {
         IGearInformationFetcher gearInformationFetcher;
+        ILogger _logger;
 
-        public GearSlotMapperFactory(IGearInformationFetcher gearInformationFetcher)
+        public GearSlotMapperFactory(IGearInformationFetcher gearInformationFetcher, ILogger logger)
         {
             this.gearInformationFetcher = gearInformationFetcher;
+            this._logger = logger;
         }
 
         public async Task<GearSlotMap> CreateGearSlotMap(GearSetInfo setInfo)

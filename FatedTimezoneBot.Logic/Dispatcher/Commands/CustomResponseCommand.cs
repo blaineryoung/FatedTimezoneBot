@@ -3,6 +3,7 @@ using FatedTimezoneBot.Logic.Discord;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Utility;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,12 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
     {
         private IChannelInformationFetcher channelInformationFetcher;
         private Random random = new Random();
+        private ILogger _logger;
 
-        public CustomResponseCommand(IChannelInformationFetcher channelInformationFetcher)
+        public CustomResponseCommand(IChannelInformationFetcher channelInformationFetcher, ILogger logger)
         {
             this.channelInformationFetcher = channelInformationFetcher;
+            this._logger = logger;
         }
 
         public async Task<bool> HandleCommand(IMessage message)
@@ -31,8 +34,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Got exception {e.Message} when attempting to get channel information for {message.Channel.Id}");
-                Console.WriteLine(e.StackTrace);
+                _logger.Warning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
 
                 return false;
             }
