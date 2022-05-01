@@ -1,4 +1,5 @@
 ﻿using Discord;
+using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Services;
 using FatedTimezoneBot.Logic.Services.Stats;
 using FatedTimezoneBot.Logic.Stores;
@@ -154,6 +155,83 @@ namespace FatedTimezoneBot.Logic.Tests
                 IMessage m = DiscordTestUtilities.BuildMessage(channelId, messageSender, message);
                 await statsService.ProcessMessage(m);
             });
+
+            string output = await statsService.PrintChannelStats(channelId);
+            string expected = b.GetExpectedOutputString();
+
+            Assert.AreEqual(expected, output);
+        }
+
+        [Test]
+        public async Task UpdateCharacterInfoTest()
+        {
+            CharacterInfo ci = new CharacterInfo();
+            OutputStringBuilder b = new OutputStringBuilder();
+
+            string messageSender = "FooBar2";
+            string messageSenderId = "FooBar2#1234";
+
+            ci.Mounts = new Mount[200];
+            for (int i = 0; i < ci.Mounts.Length; i++)
+            {
+                ci.Mounts[i] = new Mount();
+                ci.Mounts[i].Name = "FooMount";
+            }
+
+            ci.Minions = new Minion[200];
+            for (int i = 0; i < ci.Mounts.Length; i++)
+            {
+                ci.Minions[i] = new Minion();
+                ci.Minions[i].Name = "FooMount";
+            }
+
+            IStatsService statsService = new StatsService(statsStore, logger);
+
+            b.CurrentMostMounts = ci.Mounts.Length;
+            b.CurrentMostMountsUser = messageSender;
+            b.CurrentMounts = 205;
+
+            await statsService.UpdateCharacterInfo(channelId, messageSenderId, messageSender, ci);
+
+            string output = await statsService.PrintChannelStats(channelId);
+            string expected = b.GetExpectedOutputString();
+
+            Assert.AreEqual(expected, output);
+        }
+
+        [Test]
+        public async Task UpdateCharacterInfoAsyncTest()
+        {
+            CharacterInfo ci = new CharacterInfo();
+            OutputStringBuilder b = new OutputStringBuilder();
+
+            string messageSender = "FooBar2";
+            string messageSenderId = "FooBar2#1234";
+
+            ci.Mounts = new Mount[200];
+            for (int i = 0; i < ci.Mounts.Length; i++)
+            {
+                ci.Mounts[i] = new Mount();
+                ci.Mounts[i].Name = "FooMount";
+            }
+
+            ci.Minions = new Minion[200];
+            for (int i = 0; i < ci.Mounts.Length; i++)
+            {
+                ci.Minions[i] = new Minion();
+                ci.Minions[i].Name = "FooMount";
+            }
+
+            IStatsService statsService = new StatsService(statsStore, logger);
+
+            b.CurrentMostMounts = ci.Mounts.Length;
+            b.CurrentMostMountsUser = messageSender;
+            b.CurrentMounts = 205;
+
+            Parallel.For(0, 20, async i =>
+            {
+                await statsService.UpdateCharacterInfo(channelId, messageSenderId, messageSender, ci);
+            });   
 
             string output = await statsService.PrintChannelStats(channelId);
             string expected = b.GetExpectedOutputString();
