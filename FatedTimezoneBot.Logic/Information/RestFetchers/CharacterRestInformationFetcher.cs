@@ -65,7 +65,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
         
         private async Task<CharacterInfo> GetCharacterInfoCall(int characterId)
         {
-            string characterUri = $"https://xivapi.com/character/{characterId}";
+            string characterUri = $"https://xivapi.com/character/{characterId}?data=MIMO";
 
             using (HttpClient client = new HttpClient())
             {
