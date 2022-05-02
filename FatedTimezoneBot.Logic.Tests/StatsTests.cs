@@ -21,6 +21,7 @@ namespace FatedTimezoneBot.Logic.Tests
         ILogger logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
         const int channelId = 1;
+        const int channelId2 = 2;
 
         [SetUp]
         public void Setup()
@@ -54,12 +55,18 @@ namespace FatedTimezoneBot.Logic.Tests
                 WordCount = 10
             };
 
-            stats.PlayerStats.TryAdd(player1.PlayerId, player1);
-            stats.PlayerStats.TryAdd(player2.PlayerId, player2);
-            stats.PlayerStats.TryAdd(player3.PlayerId, player3);
+            stats.PlayerStatsCache.TryAdd(player1.PlayerId, player1);
+            stats.PlayerStatsCache.TryAdd(player2.PlayerId, player2);
+            stats.PlayerStatsCache.TryAdd(player3.PlayerId, player3);
 
             statsMock = new Mock<IStatsStore>();
             statsMock.Setup(x => x.GetStatsForChannel(channelId)).ReturnsAsync(stats);
+
+            ChannelStats stats2 = new ChannelStats();
+            stats.StatStart = DateTime.MinValue;
+            stats.ChannelId = channelId2;
+            statsMock.Setup(x => x.GetStatsForChannel(channelId2)).ReturnsAsync(stats2);
+
             statsStore = statsMock.Object;
         }
 
@@ -74,6 +81,62 @@ namespace FatedTimezoneBot.Logic.Tests
             string expected = b.GetExpectedOutputString();
 
             Assert.AreEqual(expected, output);
+        }
+
+        [Test]
+        public async Task EmptyStatsTest()
+        {
+            IStatsService statsService = new StatsService(statsStore, logger);
+            string output = await statsService.PrintChannelStats(channelId2);
+
+            Assert.IsNotNull(output);
+        }
+
+        [Test]
+        public async Task BasicCharacterStatsTest()
+        {
+            IStatsService statsService = new StatsService(statsStore, logger);
+            PlayerStats playerStats = await statsService.GetUserStats(channelId, "FooBar2#1234");
+
+            PlayerOutputStringBuilder posb = new PlayerOutputStringBuilder(playerStats);
+
+            string output = await statsService.PrintUserStats(channelId, "FooBar2#1234");
+            string expected = posb.GetExpectedOutputString();
+
+            Assert.AreEqual(expected, output);
+        }
+
+        [Test]
+        public async Task ProcessMessageCharacterStatsTest()
+        {
+            string message = "The quick brown fox jumped over the lazy dog"; // 9 words
+            string messageSender = "FooBar2";
+
+            IStatsService statsService = new StatsService(statsStore, logger);
+            PlayerStats playerStats = await statsService.GetUserStats(channelId, "FooBar2#1234");
+
+            PlayerOutputStringBuilder posb = new PlayerOutputStringBuilder(playerStats);
+
+            IMessage m = DiscordTestUtilities.BuildMessage(channelId, messageSender, message);
+            await statsService.ProcessMessage(m);
+
+            posb.Messages += 1;
+            posb.Words += 9;
+
+            string output = await statsService.PrintUserStats(channelId, "FooBar2#1234");
+            string expected = posb.GetExpectedOutputString();
+
+            Assert.AreEqual(expected, output);
+        }
+
+        [Test]
+        public async Task CharacterDoesNotExistGetStstsTest()
+        {
+            IStatsService statsService = new StatsService(statsStore, logger);
+
+            string output = await statsService.PrintUserStats(channelId2, "FooBar2#1234");
+
+            Assert.IsNotNull(output);
         }
 
         [Test]
@@ -240,9 +303,32 @@ namespace FatedTimezoneBot.Logic.Tests
         }
     }
 
+    internal class PlayerOutputStringBuilder
+    {
+        internal const string outputFormat = "Stats for {0} as of Monday, January 1, 0001 12:00:00 AM (UTC)\r\n\r\nMessages: **{1}**.\r\nWords: **{2}**.\r\nMounts: **{3}**.\r\n";
+
+        internal int Messages { get; set; }
+        internal int Words { get; set; }
+        internal int Mounts { get; set; }
+
+        private string characterName;
+
+        internal PlayerOutputStringBuilder(PlayerStats ps)
+        {
+            this.Messages = ps.MessageCount;
+            this.Words = ps.WordCount;
+            this.Mounts = ps.MountCount;
+            this.characterName = ps.PlayerName;
+        }
+        public string GetExpectedOutputString()
+        {
+            return string.Format(outputFormat, characterName, Messages, Words, Mounts);
+        }
+    }
+
     internal class OutputStringBuilder
     {
-        internal const string outputFormat = "Stats as of Monday, January 1, 0001 12:00:00 AM (UTC)\r\nMessages: **{0}**.  Most: {1}: {2}\r\nWords: **{3}**.  Most: {4}: {5}\r\nMounts: **{6}**.  Most: {7}: {8}\r\n";
+        internal const string outputFormat = "Stats as of Monday, January 1, 0001 12:00:00 AM (UTC)\r\n\r\nMessages: **{0}**.  Most: {1}: {2}\r\nWords: **{3}**.  Most: {4}: {5}\r\nMounts: **{6}**.  Most: {7}: {8}\r\n";
         internal const int defaultMessages = 155;
         internal const int defaultMostMessages = 100;
         internal const string defaultMostMessagesUser = "FooBar2";

@@ -22,6 +22,12 @@ namespace FatedTimezoneBot.Logic.Services.Stats
             this._logger = logger;
         }
 
+        public async Task FlushStatsForChannel(ulong channelId)
+        {
+            ChannelStats channelStats = await this._statsStore.GetStatsForChannel(channelId);
+            await this._statsStore.UpdateChannelStats(channelStats);
+        }
+
         public async Task<ChannelStats> GetStats(ulong channelId)
         {
             return await this._statsStore.GetStatsForChannel(channelId);
@@ -39,18 +45,40 @@ namespace FatedTimezoneBot.Logic.Services.Stats
             ChannelStats channelStats = await this._statsStore.GetStatsForChannel(channelId);
 
             outputString.AppendLine($"Stats as of {channelStats.StatStart.ToString("F")} (UTC)");
+            outputString.AppendLine();
 
-            PlayerStats mostMessages = channelStats.PlayerStats.Values.OrderByDescending(x => x.MessageCount).First();
-            int totalMessages = channelStats.PlayerStats.Values.Select(x => x.MessageCount).Sum();
-            outputString.AppendLine($"Messages: **{totalMessages}**.  Most: {mostMessages.PlayerName}: {mostMessages.MessageCount}");
+            PlayerStats mostMessages = channelStats.PlayerStatsCache.Values.OrderByDescending(x => x.MessageCount).FirstOrDefault();
+            int totalMessages = channelStats.PlayerStatsCache.Values.Select(x => x.MessageCount).Sum();
+            if (null != mostMessages)
+            {
+                outputString.AppendLine($"Messages: **{totalMessages}**.  Most: {mostMessages.PlayerName}: {mostMessages.MessageCount}");
+            }
+            else
+            {
+                outputString.AppendLine($"Messages: **{totalMessages}**.");
+            }
 
-            PlayerStats mostWords = channelStats.PlayerStats.Values.OrderByDescending(x => x.WordCount).First();
-            int totalWords = channelStats.PlayerStats.Values.Select(x => x.WordCount).Sum();
-            outputString.AppendLine($"Words: **{totalWords}**.  Most: {mostWords.PlayerName}: {mostWords.WordCount}");
+            PlayerStats mostWords = channelStats.PlayerStatsCache.Values.OrderByDescending(x => x.WordCount).FirstOrDefault();
+            int totalWords = channelStats.PlayerStatsCache.Values.Select(x => x.WordCount).Sum();
+            if (null != mostWords)
+            {
+                outputString.AppendLine($"Words: **{totalWords}**.  Most: {mostWords.PlayerName}: {mostWords.WordCount}");
+            }
+            else
+            {
+                outputString.AppendLine($"Words: **{totalWords}**.");
+            }
 
-            PlayerStats mostMounts = channelStats.PlayerStats.Values.OrderByDescending(x => x.MountCount).First();
-            int totalMounts = channelStats.PlayerStats.Values.Select(x => x.MountCount).Sum();
-            outputString.AppendLine($"Mounts: **{totalMounts}**.  Most: {mostMounts.PlayerName}: {mostMounts.MountCount}");
+            PlayerStats mostMounts = channelStats.PlayerStatsCache.Values.OrderByDescending(x => x.MountCount).FirstOrDefault();
+            int totalMounts = channelStats.PlayerStatsCache.Values.Select(x => x.MountCount).Sum();
+            if (null != mostMounts)
+            {
+                outputString.AppendLine($"Mounts: **{totalMounts}**.  Most: {mostMounts.PlayerName}: {mostMounts.MountCount}");
+            }
+            else
+            {
+                outputString.AppendLine($"Mounts: **{totalMounts}**.");
+            }
 
             return outputString.ToString();
         }
@@ -62,6 +90,7 @@ namespace FatedTimezoneBot.Logic.Services.Stats
             PlayerStats playerStats = channelStats.GetOrAddPlayer(user);
 
             outputString.AppendLine($"Stats for {playerStats.PlayerName} as of {channelStats.StatStart.ToString("F")} (UTC)");
+            outputString.AppendLine();
             outputString.AppendLine($"Messages: **{playerStats.MessageCount}**.");
             outputString.AppendLine($"Words: **{playerStats.WordCount}**.");
             outputString.AppendLine($"Mounts: **{playerStats.MountCount}**.");

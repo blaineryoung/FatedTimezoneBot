@@ -21,11 +21,17 @@ namespace FatedTimezoneBot.Logic.Dispatcher
             this._logger = logger;
         }
 
-        public void RegisterEvent(IEventHandler e)
+        public async Task RegisterEvent(IEventHandler e)
         {
             if (_events.ContainsKey(e.Name))
             {
                 return;
+            }
+
+            if (e.RunAtStart)
+            {
+                // Don't wait since it takes a while.
+                e.HandleEvent().ConfigureAwait(false);
             }
 
             System.Timers.Timer t = new System.Timers.Timer(e.Interval);

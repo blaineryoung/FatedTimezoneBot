@@ -14,17 +14,18 @@ namespace FatedTimezoneBot.Logic.Services.Stats
 
         public DateTime StatStart {get; set;}
 
-        public ConcurrentDictionary<string, PlayerStats> PlayerStats { get; set;}
+        public ConcurrentDictionary<string, PlayerStats> PlayerStatsCache { get; set;}
 
         public ChannelStats()
         {
-            PlayerStats = new ConcurrentDictionary<string, PlayerStats>();
+            PlayerStatsCache = new ConcurrentDictionary<string, PlayerStats>();
         }
 
         public ChannelStats(ulong channelId)
         {
             this.ChannelId = channelId;
             this.StatStart = DateTime.UtcNow;
+            PlayerStatsCache = new ConcurrentDictionary<string, PlayerStats>();
         }
 
         public string Serialize()
@@ -41,14 +42,14 @@ namespace FatedTimezoneBot.Logic.Services.Stats
         {
             PlayerStats playerStats;
 
-            if (false == this.PlayerStats.TryGetValue(userId, out playerStats))
+            if (false == this.PlayerStatsCache.TryGetValue(userId, out playerStats))
             {
                 playerStats = new PlayerStats();
                 playerStats.PlayerId = userId;
                 playerStats.PlayerName = userId; // use this temporarily until we have a real object
-                if (false == this.PlayerStats.TryAdd(userId, playerStats))
+                if (false == this.PlayerStatsCache.TryAdd(userId, playerStats))
                 {
-                    if (false == this.PlayerStats.TryGetValue(userId, out playerStats))
+                    if (false == this.PlayerStatsCache.TryGetValue(userId, out playerStats))
                     {
                         throw new Exception($"Could not add player {userId}");
                     }

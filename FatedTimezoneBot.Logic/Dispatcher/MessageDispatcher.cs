@@ -13,6 +13,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher
     public class MessageDispatcher
     {
         List<ICommandHandler> handlers = new List<ICommandHandler>();
+        List<IListener> listeners = new List<IListener>();
         ILogger _logger;
 
         public MessageDispatcher(IDiscordClientWrapper client, ILogger logger)
@@ -26,6 +27,12 @@ namespace FatedTimezoneBot.Logic.Dispatcher
             if (message.Author.IsBot)
             {
                 return;
+            }
+
+            foreach (IListener listener in listeners)
+            {
+                // Just fire it off.
+                listener.ProcessMessage(message).ConfigureAwait(false);
             }
 
             foreach (ICommandHandler h in handlers)
@@ -48,6 +55,11 @@ namespace FatedTimezoneBot.Logic.Dispatcher
         public void AddHandler(ICommandHandler c)
         {
             handlers.Add(c);
+        }
+
+        public void AddListener(IListener l)
+        {
+            listeners.Add(l);
         }
     }
 }

@@ -14,5 +14,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher
         string Name { get; }
 
         ulong Interval { get; }
+
+        bool RunAtStart { get; }
     }
 }

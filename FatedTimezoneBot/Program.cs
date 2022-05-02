@@ -16,6 +16,11 @@ using FatedTimezoneBot.Logic.Information.FileFetchers;
 using FatedTimezoneBot.Logic.Information.RestFetchers;
 using FatedTimezoneBot.Logic.Dispatcher.Events;
 using Serilog;
+using FatedTimezoneBot.Logic.Services;
+using FatedTimezoneBot.Logic.Services.Stats;
+using FatedTimezoneBot.Logic.Stores;
+using FatedTimezoneBot.Logic.Stores.FileStores;
+using FatedTimezoneBot.Logic.Dispatcher.Listeners;
 
 namespace FatedTimezoneBot
 {
@@ -43,14 +48,21 @@ namespace FatedTimezoneBot
             IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf, logger);
             IGearSetInformationFetcher gearSetInformationFetcher = new GearSetRestInformationFetcher(logger);
 
+            IStatsStore statsStore = new FileStatsStore(logger);
+            IStatsService statsService = new StatsService(statsStore, logger);
+
             IEventDispatcher eventDispatcher = new EventDispatcher(client.Client, logger);
-            eventDispatcher.RegisterEvent(new RefreshCharactersEvent(fetcher, characterFetcher, gearSetInformationFetcher, logger));
+            await eventDispatcher.RegisterEvent(new UpdateStatisticsEvent(fetcher, characterFetcher, statsService, logger));
 
             md.AddHandler(new ConvertTimeCommand(fetcher, logger));
             md.AddHandler(new RaidTimesCommand(fetcher, logger));
             md.AddHandler(new CustomResponseCommand(fetcher, logger));
+            md.AddHandler(new ShowChannelStatsCommand(statsService, logger));
+            md.AddHandler(new ShowCharacterStatsCommand(fetcher, statsService, logger));
             md.AddHandler(new ShowNeededGearCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher, logger));
             md.AddHandler(new ShowGearSummaryCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher, logger));
+
+            md.AddListener(new StatsListener(statsService, logger));
 
             // Block this task until the program is closed.
             await Task.Delay(-1);

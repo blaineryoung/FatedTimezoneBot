@@ -1,6 +1,7 @@
 ﻿using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
+using FatedTimezoneBot.Logic.Services;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -10,26 +11,30 @@ using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Dispatcher.Events
 {
-    public class RefreshCharactersEvent : IEventHandler
+    public class UpdateStatisticsEvent : IEventHandler
     {
-        public string Name => "RefreshCharacters";
+        public string Name => "UpdateStatistics";
 
         public ulong Interval => 1000 * 60 * 60; // one hour
+
+        public bool RunAtStart => true;
 
         IChannelInformationFetcher channelInformationFetcher = null;
         ICharacterInformationFetcher characterInformationFetcher = null;
         IGearSetInformationFetcher gearSetInformationFetcher = null;
+        IStatsService statsService = null;
         ILogger _logger;
         
-        public RefreshCharactersEvent(
+        public UpdateStatisticsEvent(
             IChannelInformationFetcher channelInformationFetcher,
             ICharacterInformationFetcher characterInformationFetcher,
-            IGearSetInformationFetcher gearSetInformationFetcher,
+            IStatsService statsService,
             ILogger logger)
         {
             this.channelInformationFetcher = channelInformationFetcher;
             this.characterInformationFetcher = characterInformationFetcher;
             this.gearSetInformationFetcher = gearSetInformationFetcher;
+            this.statsService = statsService;
             this._logger = logger;
         }
 
@@ -47,8 +52,10 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Events
                     {
                         try
                         {
-                            GearSetInfo gearSetInfo = await this.gearSetInformationFetcher.GetGearSetInformation(new Guid(c.bisid));
-                            CharacterInfo characterInfo = await this.characterInformationFetcher.GetCharacterInformation(c.characterid, gearSetInfo.job);
+                            CharacterInfo characterInfo = await this.characterInformationFetcher.GetCharacterInformation(c.characterid);
+
+                            await this.statsService.UpdateCharacterInfo(channelId, player.username, player.displayname, characterInfo);
+
                             _logger.Information("Refreshed {characterName}", characterInfo.Character.Name);
                         }
                         catch (CharacterNotFoundException e) 
@@ -58,6 +65,17 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Events
 
                         await Task.Delay(1300);
                     }
+                }
+
+                _logger.Information("Flushing stats for channel {channelId}", channelId);
+                try
+                {
+                    await this.statsService.FlushStatsForChannel(channelId);
+                    _logger.Information("Channel stats for channel {channelId} written to storage", channelId);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Could not flush channel stats for channel {channelId} to storage", channelId);
                 }
             }
         }
