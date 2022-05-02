@@ -29,7 +29,8 @@ namespace FatedTimezoneBot.Logic.Information.FileFetchers
             {
                 string[] tokens = file.Split('.');
                 ulong channelId;
-                if (false != ulong.TryParse(tokens[0].Split('\\')[1], out channelId))
+                if ((false != ulong.TryParse(tokens[0].Split('\\')[1], out channelId)) &&
+                    (!tokens[1].Contains("stats", StringComparison.OrdinalIgnoreCase)))
                 {
                     channelIds.Add(channelId);
                     this._logger.Information("Added channel {ChannelId}", channelId);

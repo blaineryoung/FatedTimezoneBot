@@ -16,8 +16,8 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public object FreeCompanyMembers { get; set; }
         public object Friends { get; set; }
         public object FriendsPublic { get; set; }
-        public object Minions { get; set; }
-        public object Mounts { get; set; }
+        public Minion[] Minions { get; set; }
+        public Mount[] Mounts { get; set; }
         public object PvPTeam { get; set; }
 
         public static CharacterInfo Deserialize(string content)
@@ -169,6 +169,18 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
     public class Unlockedstate1
     {
         public int? ID { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class Minion
+    {
+        public string Icon { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class Mount
+    {
+        public string Icon { get; set; }
         public string Name { get; set; }
     }
 

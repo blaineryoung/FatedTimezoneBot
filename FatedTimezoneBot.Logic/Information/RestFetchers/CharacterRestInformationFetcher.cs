@@ -37,8 +37,12 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
                     throw new CharacterNotFoundException($"Character {characterId} found, but active class not correct. Want {jobId}, got {info.Character.ActiveClassJob.ClassID}");
                 }
 
-                characterInfo = new CharacterInfoCache(info);
-                characterCache.TryAdd(characterId, characterInfo);
+                // don't cache the character if we didn't ask for job
+                if (jobId != 0)
+                {
+                    characterInfo = new CharacterInfoCache(info);
+                    characterCache.TryAdd(characterId, characterInfo);
+                }
 
                 return info;
             }
@@ -54,8 +58,12 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
                     return characterInfo.CharacterInfo;
                 }
 
-                CharacterInfoCache characterInfoNew = new CharacterInfoCache(info);
-                characterCache.TryUpdate(characterId, characterInfoNew, characterInfo);
+                // only update cache if we asked for the job.
+                if (jobId != 0)
+                {
+                    CharacterInfoCache characterInfoNew = new CharacterInfoCache(info);
+                    characterCache.TryUpdate(characterId, characterInfoNew, characterInfo);
+                }
 
                 return info;
             }    
@@ -65,7 +73,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
         
         private async Task<CharacterInfo> GetCharacterInfoCall(int characterId)
         {
-            string characterUri = $"https://xivapi.com/character/{characterId}";
+            string characterUri = $"https://xivapi.com/character/{characterId}?data=MIMO";
 
             using (HttpClient client = new HttpClient())
             {
