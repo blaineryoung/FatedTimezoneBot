@@ -305,7 +305,7 @@ namespace FatedTimezoneBot.Logic.Tests
 
     internal class PlayerOutputStringBuilder
     {
-        internal const string outputFormat = "Stats for {0} as of Monday, January 1, 0001 12:00:00 AM (UTC)\r\n\r\nMessages: **{1}**.\r\nWords: **{2}**.\r\nMounts: **{3}**.\r\n";
+        internal const string outputFormat = "Messages: **{1}**.\r\nWords: **{2}**.\r\nMounts: **{3}**.\r\n";
 
         internal int Messages { get; set; }
         internal int Words { get; set; }
@@ -328,7 +328,7 @@ namespace FatedTimezoneBot.Logic.Tests
 
     internal class OutputStringBuilder
     {
-        internal const string outputFormat = "Stats as of Monday, January 1, 0001 12:00:00 AM (UTC)\r\n\r\nMessages: **{0}**.  Most: {1}: {2}\r\nWords: **{3}**.  Most: {4}: {5}\r\nMounts: **{6}**.  Most: {7}: {8}\r\n";
+        internal const string outputFormat = "Messages: **{0}**.  Most: {1}: {2}\r\nWords: **{3}**.  Most: {4}: {5}\r\nMounts: **{6}**.  Most: {7}: {8}\r\n";
         internal const int defaultMessages = 155;
         internal const int defaultMostMessages = 100;
         internal const string defaultMostMessagesUser = "FooBar2";

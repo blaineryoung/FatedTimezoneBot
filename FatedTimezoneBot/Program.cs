@@ -61,6 +61,7 @@ namespace FatedTimezoneBot
             md.AddHandler(new ShowCharacterStatsCommand(fetcher, statsService, logger));
             md.AddHandler(new ShowNeededGearCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher, logger));
             md.AddHandler(new ShowGearSummaryCommand(fetcher, characterFetcher, gf, gearSlotMapper, gearSetInformationFetcher, logger));
+            md.AddHandler(new ResetStatsCommand(fetcher, characterFetcher, statsService, logger));
 
             md.AddListener(new StatsListener(statsService, logger));
 
