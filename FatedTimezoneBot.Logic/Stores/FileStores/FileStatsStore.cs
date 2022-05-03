@@ -65,7 +65,7 @@ namespace FatedTimezoneBot.Logic.Stores.FileStores
 
             // There should be one global channel stats, so no need to update the cache.
             // This of course will be horribly broken if we ever scale.
-            
+
             // Make a backup of the old stats, if applicable.
             if (File.Exists(fileName))
             {
@@ -89,6 +89,17 @@ namespace FatedTimezoneBot.Logic.Stores.FileStores
                 catch (Exception e)
                 {
                     _logger.Error(e, "Could not flush stats for channel {channelId}", stats.ChannelId);
+                }
+            }
+
+            ChannelStats oldStats;
+
+            if (false != channelCache.TryGetValue(stats.ChannelId, out oldStats))
+            {
+                if (false == channelCache.TryUpdate(stats.ChannelId, stats, oldStats))
+                {
+                    _logger.Error("Could not fully reset stats for channel {channelId}", stats.ChannelId);
+                    throw new Exception($"Could not fully reset stats for channel {stats.ChannelId}");
                 }
             }
         }

@@ -21,7 +21,6 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Events
 
         IChannelInformationFetcher channelInformationFetcher = null;
         ICharacterInformationFetcher characterInformationFetcher = null;
-        IGearSetInformationFetcher gearSetInformationFetcher = null;
         IStatsService statsService = null;
         ILogger _logger;
         
@@ -33,7 +32,6 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Events
         {
             this.channelInformationFetcher = channelInformationFetcher;
             this.characterInformationFetcher = characterInformationFetcher;
-            this.gearSetInformationFetcher = gearSetInformationFetcher;
             this.statsService = statsService;
             this._logger = logger;
         }

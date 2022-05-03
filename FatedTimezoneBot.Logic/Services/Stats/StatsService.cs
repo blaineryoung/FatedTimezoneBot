@@ -44,9 +44,6 @@ namespace FatedTimezoneBot.Logic.Services.Stats
             StringBuilder outputString = new StringBuilder();
             ChannelStats channelStats = await this._statsStore.GetStatsForChannel(channelId);
 
-            outputString.AppendLine($"Stats as of {channelStats.StatStart.ToString("F")} (UTC)");
-            outputString.AppendLine();
-
             PlayerStats mostMessages = channelStats.PlayerStatsCache.Values.OrderByDescending(x => x.MessageCount).FirstOrDefault();
             int totalMessages = channelStats.PlayerStatsCache.Values.Select(x => x.MessageCount).Sum();
             if (null != mostMessages)
@@ -89,8 +86,6 @@ namespace FatedTimezoneBot.Logic.Services.Stats
             ChannelStats channelStats = await this._statsStore.GetStatsForChannel(channelId);
             PlayerStats playerStats = channelStats.GetOrAddPlayer(user);
 
-            outputString.AppendLine($"Stats for {playerStats.PlayerName} as of {channelStats.StatStart.ToString("F")} (UTC)");
-            outputString.AppendLine();
             outputString.AppendLine($"Messages: **{playerStats.MessageCount}**.");
             outputString.AppendLine($"Words: **{playerStats.WordCount}**.");
             outputString.AppendLine($"Mounts: **{playerStats.MountCount}**.");
@@ -100,6 +95,17 @@ namespace FatedTimezoneBot.Logic.Services.Stats
 
         public async Task ProcessMessage(IMessage message)
         {
+            if (message.Author.IsBot)
+            {
+                return;
+            }
+
+            // Ignore commands
+            if (message.Content.StartsWith('!'))
+            {
+                return;
+            }
+
             string userId = DiscordUtilities.GetDisambiguatedUser(message.Author);
             ulong channelId = message.Channel.Id;
 
@@ -115,6 +121,12 @@ namespace FatedTimezoneBot.Logic.Services.Stats
             }
         }
 
+        public async Task ResetStatsForChannel(ulong channelId)
+        {
+            ChannelStats channelStats = new ChannelStats(channelId);
+            await this._statsStore.UpdateChannelStats(channelStats);
+        }
+
         public async Task UpdateCharacterInfo(ulong channelId, string userId, string userName, CharacterInfo ci)
         {
             ChannelStats channelStats = await this._statsStore.GetStatsForChannel(channelId);
@@ -123,7 +135,10 @@ namespace FatedTimezoneBot.Logic.Services.Stats
             lock(playerStats)
             {
                 playerStats.PlayerName = userName;
-                playerStats.MountCount = ci.Mounts.Count();
+                if (ci.Mounts.Count() > playerStats.MountCount)
+                {
+                    playerStats.MountCount = ci.Mounts.Count();
+                }
             }
         }
     }

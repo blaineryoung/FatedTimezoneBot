@@ -24,5 +24,7 @@ namespace FatedTimezoneBot.Logic.Services
         Task UpdateCharacterInfo(ulong channelId, string userId, string userName, CharacterInfo ci);
 
         Task FlushStatsForChannel(ulong channelId);
+
+        Task ResetStatsForChannel(ulong channelId);
     }
 }
