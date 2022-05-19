@@ -65,7 +65,7 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public int JobID { get; set; }
         public int Level { get; set; }
         public string Name { get; set; }
-        public Unlockedstate UnlockedState { get; set; }
+        public Unlockedstate? UnlockedState { get; set; }
     }
 
     public class Unlockedstate
@@ -163,7 +163,7 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public int JobID { get; set; }
         public int Level { get; set; }
         public string Name { get; set; }
-        public Unlockedstate1 UnlockedState { get; set; }
+        public Unlockedstate1? UnlockedState { get; set; }
     }
 
     public class Unlockedstate1
