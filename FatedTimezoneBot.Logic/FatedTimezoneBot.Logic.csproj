@@ -20,6 +20,9 @@
     <None Update="ChannelData\790491244354469892.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="GameData\Characters\30340081.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="GameData\Characters\42.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

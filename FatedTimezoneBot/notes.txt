@@ -4,4 +4,4 @@ https://etro.gg/api/gearsets/30122448-70c8-421c-bd8c-820e2905858b/
 
 32c72ae2-3c53-49cf-ac02-b989c693d8b5
 
-https://xivapi.com/character/19442264
+https://xivapi.com/character/19442264 30340081
