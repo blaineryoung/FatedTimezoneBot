@@ -70,7 +70,7 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
 
     public class Unlockedstate
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
         public string Name { get; set; }
     }
 

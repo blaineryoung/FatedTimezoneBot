@@ -67,6 +67,18 @@ namespace FatedTimezoneBot.Logic.Tests
         }
 
         [Test]
+        public async Task NullingCharacterTest()
+        {
+            ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
+            IGearInformationFetcher gf = new GearFileInformationFetcher(logger);
+            IGearSlotMapperFactory gearSlotMapper = new GearSlotMapperFactory(gf, logger);
+
+            CharacterInfo ci = await characterFetcher.GetCharacterInformation(30340081);
+
+            Assert.IsNotNull(ci);
+        }
+
+        [Test]
         public async Task GearDiffTEst()
         {
             ICharacterInformationFetcher characterFetcher = new CharacterFileInformationFetcher();
