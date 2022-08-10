@@ -56,6 +56,7 @@ namespace FatedTimezoneBot
 
             md.AddHandler(new ConvertTimeCommand(fetcher, logger));
             md.AddHandler(new RaidTimesCommand(fetcher, logger));
+            md.AddHandler(new PurposeCommand(fetcher, logger));
             md.AddHandler(new CustomResponseCommand(fetcher, logger));
             md.AddHandler(new ShowChannelStatsCommand(statsService, logger));
             md.AddHandler(new ShowCharacterStatsCommand(fetcher, statsService, logger));

@@ -39,6 +39,7 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public string username { get; set; }
         public string timezoneid { get; set; }
         public string displayname { get; set; }
+        public string? purpose { get; set; }
         public ChannelCharacter[] characters { get; set; }
     }
 
