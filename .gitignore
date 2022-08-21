@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /FatedTimezoneBot/creds.txt
 /FatedTimezoneBot.Logic/ChannelData/922197476230967318.json
+/FatedTimezoneBot/appsettings.local.json
