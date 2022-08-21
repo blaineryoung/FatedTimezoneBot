@@ -1,22 +1,16 @@
 ﻿using Discord;
 using FatedTimezoneBot.Logic.Discord;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace FatedTimezoneBot.Logic.Dispatcher
 {
-    public class MessageDispatcher
+    public class MessageDispatcher : IMessageDispatcher
     {
         List<ICommandHandler> handlers = new List<ICommandHandler>();
         List<IListener> listeners = new List<IListener>();
-        ILogger _logger;
+        ILogger<MessageDispatcher> _logger;
 
-        public MessageDispatcher(IDiscordClientWrapper client, ILogger logger)
+        public MessageDispatcher(IDiscordClientWrapper client, ILogger<MessageDispatcher> logger)
         {
             client.MessageReceived += Client_MessageReceived;
             this._logger = logger;
@@ -43,7 +37,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher
                     if (messageProcessed)
                     {
                         break;
-                    }                    
+                    }
                 }
                 catch (Exception e)
                 {

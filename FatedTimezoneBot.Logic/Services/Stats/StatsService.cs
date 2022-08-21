@@ -2,21 +2,17 @@
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Stores;
 using FatedTimezoneBot.Logic.Utility;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.Logging;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Services.Stats
 {
     public class StatsService : IStatsService
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<StatsService> _logger;
         private readonly IStatsStore _statsStore;
 
-        public StatsService(IStatsStore store, ILogger logger)
+        public StatsService(IStatsStore store, ILogger<StatsService> logger)
         {
             this._statsStore = store;
             this._logger = logger;

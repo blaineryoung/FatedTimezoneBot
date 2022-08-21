@@ -2,7 +2,7 @@
 using FatedTimezoneBot.Logic.Discord;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Utility;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +15,9 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
     public class ConvertTimeCommand : ICommandHandler
     {
         private IChannelInformationFetcher channelInformationFetcher;
-        private ILogger _logger;
+        private ILogger<ConvertTimeCommand> _logger;
 
-        public ConvertTimeCommand(IChannelInformationFetcher channelInformationFetcher, ILogger logger)
+        public ConvertTimeCommand(IChannelInformationFetcher channelInformationFetcher, ILogger<ConvertTimeCommand> logger)
         {
             this.channelInformationFetcher = channelInformationFetcher;
             this._logger = logger;
@@ -37,7 +37,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
+                _logger.LogWarning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
 
                 return false;
             }
@@ -52,7 +52,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             TimeZoneInfo tz;
             if (false == channelInformation.PlayerInformation.TimeZoneMappings.TryGetValue(userName, out tz))
             {
-                _logger.Warning("User {username} not found", userName);
+                _logger.LogWarning("User {username} not found", userName);
                 return false;
             }
 

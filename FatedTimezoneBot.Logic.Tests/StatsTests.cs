@@ -3,13 +3,10 @@ using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Services;
 using FatedTimezoneBot.Logic.Services.Stats;
 using FatedTimezoneBot.Logic.Stores;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Tests
@@ -18,7 +15,7 @@ namespace FatedTimezoneBot.Logic.Tests
     {
         private IStatsStore statsStore;
         Mock<IStatsStore> statsMock;
-        ILogger logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+        ILogger logger = DiscordTestUtilities.GetLogger();
 
         const int channelId = 1;
         const int channelId2 = 2;

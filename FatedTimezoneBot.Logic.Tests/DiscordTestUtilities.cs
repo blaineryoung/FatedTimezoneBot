@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,16 @@ namespace FatedTimezoneBot.Logic.Tests
             messageMock.SetupGet(x => x.Content).Returns(message);
 
             return messageMock.Object;
+        }
+
+        public static ILogger GetLogger()
+        {
+            var logger = LoggerFactory.Create(config =>
+            {
+                config.AddConsole();
+            }).CreateLogger("Program");
+
+            return logger;
         }
     }
 }
