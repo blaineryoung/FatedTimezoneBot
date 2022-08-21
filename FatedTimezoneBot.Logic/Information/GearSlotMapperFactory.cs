@@ -1,22 +1,16 @@
 ﻿using FatedTimezoneBot.Logic.Information.Serializers;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using Microsoft.Extensions.Logging;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Information
 {
     public class GearSlotMapperFactory : IGearSlotMapperFactory
     {
         IGearInformationFetcher gearInformationFetcher;
-        ILogger _logger;
+        ILogger<GearSlotMapperFactory> _logger;
 
-        public GearSlotMapperFactory(IGearInformationFetcher gearInformationFetcher, ILogger logger)
+        public GearSlotMapperFactory(IGearInformationFetcher gearInformationFetcher, ILogger<GearSlotMapperFactory> logger)
         {
             this.gearInformationFetcher = gearInformationFetcher;
             this._logger = logger;

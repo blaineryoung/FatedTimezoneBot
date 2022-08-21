@@ -1,15 +1,6 @@
 ﻿using Discord;
-using FatedTimezoneBot.Logic.Discord;
-using FatedTimezoneBot.Logic.Information;
-using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Services;
-using FatedTimezoneBot.Logic.Utility;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 {
@@ -17,9 +8,9 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
     {
         private IStatsService statsService;
         const string ShowChannelStatsCommandString = "!channelstats";
-        private ILogger _logger;
+        private ILogger<ShowChannelStatsCommand> _logger;
 
-        public ShowChannelStatsCommand(IStatsService statsService, ILogger logger)
+        public ShowChannelStatsCommand(IStatsService statsService, ILogger<ShowChannelStatsCommand> logger)
         {
             this.statsService = statsService;
             _logger = logger;
@@ -39,7 +30,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "Attempting to load statistics for channel {channel}", message.Channel.Id);
+                _logger.LogWarning(e, "Attempting to load statistics for channel {channel}", message.Channel.Id);
 
                 return false;
             }

@@ -3,14 +3,10 @@ using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Utility;
-using Serilog;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 {
@@ -21,7 +17,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
         private IGearInformationFetcher gearInformationFetcher;
         private IGearSlotMapperFactory gearSlotMapper;
         private IGearSetInformationFetcher gearSetInformationFetcher;
-        private ILogger _logger;
+        private ILogger<ShowGearSummaryCommand> _logger;
 
         const string NeededGearCommandString = "!gearsummary";
 
@@ -33,7 +29,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             IGearInformationFetcher gearInformationFetcher,
             IGearSlotMapperFactory gearSlotMapperFactory,
             IGearSetInformationFetcher gearSetInformationFetcher,
-            ILogger logger)
+            ILogger<ShowGearSummaryCommand> logger)
         {
             this.timeZones = TimeZoneInfo.GetSystemTimeZones();
             this.channelInformationFetcher = channelInformationFetcher;
@@ -58,7 +54,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
+                _logger.LogWarning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
 
                 return false;
             }

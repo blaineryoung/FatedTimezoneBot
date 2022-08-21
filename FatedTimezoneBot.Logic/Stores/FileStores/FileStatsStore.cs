@@ -1,20 +1,15 @@
 ﻿using FatedTimezoneBot.Logic.Services.Stats;
-using Serilog;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Stores.FileStores
 {
     public class FileStatsStore : IStatsStore
     {
         private ConcurrentDictionary<ulong, ChannelStats> channelCache = new ConcurrentDictionary<ulong, ChannelStats>();
-        private ILogger _logger;
+        private ILogger<FileStatsStore> _logger;
 
-        public FileStatsStore(ILogger logger)
+        public FileStatsStore(ILogger<FileStatsStore> logger)
         {
             _logger = logger;
         }
@@ -25,12 +20,12 @@ namespace FatedTimezoneBot.Logic.Stores.FileStores
 
             if (false == channelCache.TryGetValue(channelId, out channelStats))
             {
-                _logger.Information("Channel stats for {channelId} not in cache", channelId);
+                _logger.LogInformation("Channel stats for {channelId} not in cache", channelId);
                 string fileName = $"channeldata\\{channelId}.stats.json";
 
                 if (File.Exists(fileName))
                 {
-                    _logger.Information("Channel stats for {channelId} exists, loading from store", channelId);
+                    _logger.LogInformation("Channel stats for {channelId} exists, loading from store", channelId);
                     string content;
                     using (StreamReader sr = new StreamReader(fileName))
                     {
@@ -41,7 +36,7 @@ namespace FatedTimezoneBot.Logic.Stores.FileStores
                 }
                 else
                 {
-                    _logger.Information("Channel stats for {channelId} does not exist, creating new", channelId);
+                    _logger.LogInformation("Channel stats for {channelId} does not exist, creating new", channelId);
                     channelStats = new ChannelStats(channelId);
                 }
 
@@ -50,7 +45,7 @@ namespace FatedTimezoneBot.Logic.Stores.FileStores
                     if (false == channelCache.TryGetValue(channelId, out channelStats))
                     {
                         Exception e = new Exception("Couldn't create new channel stats, but couldn't retrieve either");
-                        _logger.Error(e, "Could not create stats for chanel {channelId}", channelId);
+                        _logger.LogError(e, "Could not create stats for chanel {channelId}", channelId);
                     }
                 }
             }
@@ -78,17 +73,17 @@ namespace FatedTimezoneBot.Logic.Stores.FileStores
 
             string content = stats.Serialize();
 
-            _logger.Information("Flushing stats for channel {channelId}", stats.ChannelId);
+            _logger.LogInformation("Flushing stats for channel {channelId}", stats.ChannelId);
             using (StreamWriter sw = new StreamWriter(fileName, false))
             {
                 try
                 {
                     await sw.WriteAsync(content);
-                    _logger.Information("Successfully flushed stats for channel {channelId}", stats.ChannelId);
+                    _logger.LogInformation("Successfully flushed stats for channel {channelId}", stats.ChannelId);
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, "Could not flush stats for channel {channelId}", stats.ChannelId);
+                    _logger.LogError(e, "Could not flush stats for channel {channelId}", stats.ChannelId);
                 }
             }
 
@@ -98,7 +93,7 @@ namespace FatedTimezoneBot.Logic.Stores.FileStores
             {
                 if (false == channelCache.TryUpdate(stats.ChannelId, stats, oldStats))
                 {
-                    _logger.Error("Could not fully reset stats for channel {channelId}", stats.ChannelId);
+                    _logger.LogError("Could not fully reset stats for channel {channelId}", stats.ChannelId);
                     throw new Exception($"Could not fully reset stats for channel {stats.ChannelId}");
                 }
             }

@@ -1,21 +1,17 @@
 ﻿using Discord;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FatedTimezoneBot.Logic.Discord;
+using Microsoft.Extensions.Logging;
 
 namespace FatedTimezoneBot.Logic.Dispatcher
 {
     public class EventDispatcher : IEventDispatcher
     {
-        IDiscordClient _client;
+        IDiscordClientWrapper _client;
 
         private Dictionary<string, EventInfo> _events = new Dictionary<string, EventInfo>();
-        private ILogger _logger;
+        private ILogger<EventDispatcher> _logger;
 
-        public EventDispatcher(IDiscordClient client, ILogger logger)
+        public EventDispatcher(IDiscordClientWrapper client, ILogger<EventDispatcher> logger)
         {
             this._client = client;
             this._logger = logger;
@@ -51,7 +47,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher
             IEnumerable<IEventHandler> events = _events.Where(x => x.Value.Name.Equals(eventName, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value.Handler);
             foreach (IEventHandler e in events)
             {
-                _logger.Information("Executing event {eventname}", e.Name);
+                _logger.LogInformation("Executing event {eventname}", e.Name);
                 await e.HandleEvent();
             }
         }

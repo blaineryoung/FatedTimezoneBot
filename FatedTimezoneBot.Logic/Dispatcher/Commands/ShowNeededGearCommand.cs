@@ -2,14 +2,10 @@
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Utility;
-using Serilog;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 {
@@ -24,15 +20,15 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
         const string NeededGearCommandString = "!neededgear";
 
         ICollection<TimeZoneInfo> timeZones;
-        private ILogger _logger;
+        private ILogger<ShowNeededGearCommand> _logger;
 
         public ShowNeededGearCommand(
             IChannelInformationFetcher channelInformationFetcher,
             ICharacterInformationFetcher characterInformationFetcher,
             IGearInformationFetcher gearInformationFetcher,
             IGearSlotMapperFactory gearSlotMapperFactory,
-            IGearSetInformationFetcher gearSetInformationFetcher, 
-            ILogger logger)
+            IGearSetInformationFetcher gearSetInformationFetcher,
+            ILogger<ShowNeededGearCommand> logger)
         {
             this.timeZones = TimeZoneInfo.GetSystemTimeZones();
             this.channelInformationFetcher = channelInformationFetcher;
@@ -57,7 +53,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
+                _logger.LogWarning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
 
                 return false;
             }
@@ -108,7 +104,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                     }
                     catch (Exception e)
                     {
-                        _logger.Warning(e, "Could not build diff for character {characterID}", character.characterid);
+                        _logger.LogWarning(e, "Could not build diff for character {characterID}", character.characterid);
                     }
                 }
                 output.AppendLine();

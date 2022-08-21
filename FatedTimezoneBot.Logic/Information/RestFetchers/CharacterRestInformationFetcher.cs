@@ -1,13 +1,8 @@
 ﻿using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
-using Serilog;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Information.RestFetchers
 {
@@ -16,9 +11,9 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
         // This is a cheesy in memory cache.  If this ever gets big, we'll need to do something better. 
         private ConcurrentDictionary<int, CharacterInfoCache> characterCache = new ConcurrentDictionary<int, CharacterInfoCache>();
         const int characterAgeMaxMinutes = 30;
-        private ILogger _logger;
+        private ILogger<CharacterRestInformationFetcher> _logger;
 
-        public CharacterRestInformationFetcher(ILogger logger)
+        public CharacterRestInformationFetcher(ILogger<CharacterRestInformationFetcher> logger)
         {
             _logger = logger;
         }
@@ -93,7 +88,7 @@ namespace FatedTimezoneBot.Logic.Information.RestFetchers
                 }
                 else
                 {
-                    _logger.Warning("Could not retrieve character {id} - {status} ({code})", characterId, (int)response.StatusCode, response.ReasonPhrase);
+                    _logger.LogWarning("Could not retrieve character {id} - {status} ({code})", characterId, (int)response.StatusCode, response.ReasonPhrase);
                     throw new CharacterNotFoundException($"Character id {characterId} not found - {response.StatusCode}, {response.ReasonPhrase}");
                 }
             }

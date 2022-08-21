@@ -5,7 +5,7 @@ using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Services;
 using FatedTimezoneBot.Logic.Utility;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +22,13 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
         IChannelInformationFetcher channelInformationFetcher = null;
         ICharacterInformationFetcher characterInformationFetcher = null;
 
-        private ILogger _logger;
+        private ILogger<ResetStatsCommand> _logger;
 
         public ResetStatsCommand(
             IChannelInformationFetcher channelInformationFetcher,
             ICharacterInformationFetcher characterInformationFetcher, 
-            IStatsService statsService, 
-            ILogger logger)
+            IStatsService statsService,
+            ILogger<ResetStatsCommand> logger)
         {
             this.statsService = statsService;
             _logger = logger;
@@ -45,7 +45,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 
             if (0 != string.Compare(DiscordUtilities.GetDisambiguatedUser(message.Author), "DaktCole#3699", StringComparison.OrdinalIgnoreCase))
             {
-                _logger.Warning("{baduser} tried to reset stats.  That's bad and not Dakt", DiscordUtilities.GetDisambiguatedUser(message.Author));
+                _logger.LogWarning("{baduser} tried to reset stats.  That's bad and not Dakt", DiscordUtilities.GetDisambiguatedUser(message.Author));
                 return false;
             }
 
@@ -56,14 +56,14 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "Attempting to reset statistics for channel {channel}", message.Channel.Id);
+                _logger.LogWarning(e, "Attempting to reset statistics for channel {channel}", message.Channel.Id);
 
                 return false;
             }
 
             await message.Channel.SendMessageAsync("Rebuilding stats", false);
 
-            _logger.Information("Refreshing characters");
+            _logger.LogInformation("Refreshing characters");
             ChannelInformation channelInformation = await this.channelInformationFetcher.GetChannelInformation(message.Channel.Id);
             foreach (ChannelPlayer player in channelInformation.PlayerInformation.PlayerMap.Values)
             {
@@ -76,11 +76,11 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 
                         await this.statsService.UpdateCharacterInfo(message.Channel.Id, player.username, player.displayname, characterInfo);
 
-                        _logger.Information("Refreshed {characterName}", characterInfo.Character.Name);
+                        _logger.LogInformation("Refreshed {characterName}", characterInfo.Character.Name);
                     }
                     catch (CharacterNotFoundException e)
                     {
-                        _logger.Warning("Could not refresh {playerName} - {characterid} - {Message}", player.displayname, c.characterid, e.Message);
+                        _logger.LogWarning("Could not refresh {playerName} - {characterid} - {Message}", player.displayname, c.characterid, e.Message);
                     } // Not a big deal, just won't update.
                 }
             }
@@ -99,20 +99,20 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                     currentPointer = m.Id;
                     currentCount++;
                 }
-                _logger.Information("Processed {count} messages for channel {channelId}", currentCount, message.Channel.Id);
+                _logger.LogInformation("Processed {count} messages for channel {channelId}", currentCount, message.Channel.Id);
             }
-            _logger.Information("Refresh complete");
+            _logger.LogInformation("Refresh complete");
             await message.Channel.SendMessageAsync("Rebuild complete", false);
 
-            _logger.Information("Flushing stats for channel {channelId}", message.Channel.Id);
+            _logger.LogInformation("Flushing stats for channel {channelId}", message.Channel.Id);
             try
             {
                 await this.statsService.FlushStatsForChannel(message.Channel.Id);
-                _logger.Information("Channel stats for channel {channelId} written to storage", message.Channel.Id);
+                _logger.LogInformation("Channel stats for channel {channelId} written to storage", message.Channel.Id);
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Could not flush channel stats for channel {channelId} to storage", message.Channel.Id);
+                _logger.LogError(e, "Could not flush channel stats for channel {channelId} to storage", message.Channel.Id);
             }
 
             return true;

@@ -1,22 +1,17 @@
 ﻿using Discord;
 using FatedTimezoneBot.Logic.Services;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace FatedTimezoneBot.Logic.Dispatcher.Listeners
 {
     public class StatsListener : IListener
     {
-        private ILogger _logger;
+        private ILogger<StatsListener> _logger;
         private IStatsService _statsService;
 
         public StatsListener(
             IStatsService statsService,
-            ILogger logger)
+            ILogger<StatsListener> logger)
         {
             this._statsService = statsService;
             this._logger = logger;
