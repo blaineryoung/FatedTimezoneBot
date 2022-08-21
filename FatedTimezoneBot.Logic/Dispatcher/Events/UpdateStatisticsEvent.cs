@@ -2,12 +2,7 @@
 using FatedTimezoneBot.Logic.Information.Exceptions;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Services;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace FatedTimezoneBot.Logic.Dispatcher.Events
 {
@@ -22,13 +17,13 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Events
         IChannelInformationFetcher channelInformationFetcher = null;
         ICharacterInformationFetcher characterInformationFetcher = null;
         IStatsService statsService = null;
-        ILogger _logger;
+        ILogger<UpdateStatisticsEvent> _logger;
         
         public UpdateStatisticsEvent(
             IChannelInformationFetcher channelInformationFetcher,
             ICharacterInformationFetcher characterInformationFetcher,
             IStatsService statsService,
-            ILogger logger)
+            ILogger<UpdateStatisticsEvent> logger)
         {
             this.channelInformationFetcher = channelInformationFetcher;
             this.characterInformationFetcher = characterInformationFetcher;
@@ -54,26 +49,26 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Events
 
                             await this.statsService.UpdateCharacterInfo(channelId, player.username, player.displayname, characterInfo);
 
-                            _logger.Information("Refreshed {characterName}", characterInfo.Character.Name);
+                            _logger.LogInformation("Refreshed {characterName}", characterInfo.Character.Name);
                         }
                         catch (CharacterNotFoundException e) 
                         {
-                            _logger.Warning("Could not refresh {playerName} - {characterid} - {Message}", player.displayname, c.characterid, e.Message);
+                            _logger.LogWarning("Could not refresh {playerName} - {characterid} - {Message}", player.displayname, c.characterid, e.Message);
                         } // Not a big deal, just won't update.
 
                         await Task.Delay(1300);
                     }
                 }
 
-                _logger.Information("Flushing stats for channel {channelId}", channelId);
+                _logger.LogInformation("Flushing stats for channel {channelId}", channelId);
                 try
                 {
                     await this.statsService.FlushStatsForChannel(channelId);
-                    _logger.Information("Channel stats for channel {channelId} written to storage", channelId);
+                    _logger.LogInformation("Channel stats for channel {channelId} written to storage", channelId);
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, "Could not flush channel stats for channel {channelId} to storage", channelId);
+                    _logger.LogError(e, "Could not flush channel stats for channel {channelId} to storage", channelId);
                 }
             }
         }

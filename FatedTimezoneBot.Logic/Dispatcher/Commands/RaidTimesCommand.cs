@@ -3,7 +3,7 @@ using FatedTimezoneBot.Logic.Discord;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Utility;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +16,11 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
     {
         private IChannelInformationFetcher channelInformationFetcher;
         const string RaidTimesCommandString = "!raidtime";
-        private ILogger _logger;
+        private ILogger<RaidTimesCommand> _logger;
 
         ICollection<TimeZoneInfo> timeZones;
 
-        public RaidTimesCommand(IChannelInformationFetcher channelInformationFetcher, ILogger logger)
+        public RaidTimesCommand(IChannelInformationFetcher channelInformationFetcher, ILogger<RaidTimesCommand> logger)
         {
             this.timeZones = TimeZoneInfo.GetSystemTimeZones();
             this.channelInformationFetcher = channelInformationFetcher;
@@ -41,7 +41,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
+                _logger.LogWarning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
 
                 return false;
             }

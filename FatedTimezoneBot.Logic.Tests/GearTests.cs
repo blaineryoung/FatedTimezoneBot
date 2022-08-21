@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Information.FileFetchers;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace FatedTimezoneBot.Logic.Tests
 {
     public class GearTests
     {
-        ILogger logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+        ILogger logger = DiscordTestUtilities.GetLogger();
 
         [Test]
         public async Task GetGearTest()

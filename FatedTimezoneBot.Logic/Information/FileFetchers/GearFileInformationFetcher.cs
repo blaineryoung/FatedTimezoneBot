@@ -1,20 +1,15 @@
 ﻿using FatedTimezoneBot.Logic.Information.Serializers;
-using Serilog;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FatedTimezoneBot.Logic.Information.FileFetchers
 {
     public class GearFileInformationFetcher : IGearInformationFetcher
     {
         public IReadOnlyDictionary<int, GearItem> GearMap { get; private set; }
-        public ILogger _logger;
+        public ILogger<GearFileInformationFetcher> _logger;
 
-        public GearFileInformationFetcher(ILogger logger)
+        public GearFileInformationFetcher(ILogger<GearFileInformationFetcher> logger)
         {
             _logger = logger;
         }

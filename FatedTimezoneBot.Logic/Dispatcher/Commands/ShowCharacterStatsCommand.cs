@@ -1,15 +1,9 @@
 ﻿using Discord;
-using FatedTimezoneBot.Logic.Discord;
 using FatedTimezoneBot.Logic.Information;
 using FatedTimezoneBot.Logic.Information.Serializers;
 using FatedTimezoneBot.Logic.Services;
 using FatedTimezoneBot.Logic.Utility;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace FatedTimezoneBot.Logic.Dispatcher.Commands
 {
@@ -18,12 +12,12 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
         private IStatsService statsService;
         private IChannelInformationFetcher _channelInformationFetcher;
         const string ShowChannelStatsCommandString = "!characterstats";
-        private ILogger _logger;
+        private ILogger<ShowCharacterStatsCommand> _logger;
 
         public ShowCharacterStatsCommand(
             IChannelInformationFetcher channelInformationFetcher, 
-            IStatsService statsService, 
-            ILogger logger)
+            IStatsService statsService,
+            ILogger<ShowCharacterStatsCommand> logger)
         {
             this.statsService = statsService;
             this._channelInformationFetcher = channelInformationFetcher;
@@ -44,7 +38,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
+                _logger.LogWarning(e, "Attempting to load information for channel {channel}", message.Channel.Id);
 
                 return false;
             }
@@ -59,14 +53,14 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
                 user = DiscordUtilities.GetDisambiguatedUser(message.Author);
                 if (false == channelInformation.PlayerInformation.PlayerMap.TryGetValue(user, out player))
                 {
-                    _logger.Warning("Could not find information for user {user}, skipping stats", user);
+                    _logger.LogWarning("Could not find information for user {user}, skipping stats", user);
                 }
             }
             else
             {
                 if (false == channelInformation.PlayerInformation.PlayerDisplayNameMap.TryGetValue(commandArgs[1], out player))
                 {
-                    _logger.Warning("Could not find information for user {user}, skipping stats", commandArgs[1]);
+                    _logger.LogWarning("Could not find information for user {user}, skipping stats", commandArgs[1]);
                 }
                 user = channelInformation.PlayerInformation.PlayerDisplayNameMap[commandArgs[1]].username;
             }
@@ -78,7 +72,7 @@ namespace FatedTimezoneBot.Logic.Dispatcher.Commands
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "Attempting to load statistics for player {player}", user);
+                _logger.LogWarning(e, "Attempting to load statistics for player {player}", user);
 
                 return false;
             }
