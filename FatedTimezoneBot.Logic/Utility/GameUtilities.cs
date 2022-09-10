@@ -11,10 +11,10 @@ namespace FatedTimezoneBot.Logic.Utility
     {
         public const string Crafted = "Crafted";
         public const string Tomes = "Tomes";
-        public const string P1S = "P1S";
-        public const string P2S = "P2S";
-        public const string P3S = "P3S";
-        public const string P4S = "P4S";
+        public const string P1S = "P5S";
+        public const string P2S = "P6S";
+        public const string P3S = "P7S";
+        public const string P4S = "P8S";
         public const string Unknown = "Unknown";
 
 

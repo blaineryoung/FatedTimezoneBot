@@ -41,7 +41,7 @@ namespace FatedTimezoneBot
 
             using var channel = new InMemoryChannel();
             IServiceCollection services = new ServiceCollection();
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json"); //or what ever file you have the settings
+            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.local.json"); //or what ever file you have the settings
             IConfiguration configuration = builder.Build();
 
             services.Configure<TelemetryConfiguration>(config => config.TelemetryChannel = channel);
