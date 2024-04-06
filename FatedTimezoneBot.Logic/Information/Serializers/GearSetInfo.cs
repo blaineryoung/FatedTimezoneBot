@@ -27,7 +27,6 @@ namespace FatedTimezoneBot.Logic.Information.Serializers
         public int minMateriaTier { get; set; }
         public int maxMateriaTier { get; set; }
         public Materia materia { get; set; }
-        public Totalparam[] totalParams { get; set; }
         public object buffs { get; set; }
         public object relics { get; set; }
         public float patch { get; set; }
