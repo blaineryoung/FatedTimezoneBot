@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FatedTimezoneBot", "FatedTi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FatedTimezoneBot.Logic", "FatedTimezoneBot.Logic\FatedTimezoneBot.Logic.csproj", "{12F94655-8A1D-4C66-A4E6-7FDF1F08A42A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FatedTimezoneBot.Logic.Tests", "FatedTimezoneBot.Logic.Tests\FatedTimezoneBot.Logic.Tests.csproj", "{ECD2BED7-BDC2-419C-8D46-486B7114A27F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{12F94655-8A1D-4C66-A4E6-7FDF1F08A42A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F94655-8A1D-4C66-A4E6-7FDF1F08A42A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12F94655-8A1D-4C66-A4E6-7FDF1F08A42A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ECD2BED7-BDC2-419C-8D46-486B7114A27F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ECD2BED7-BDC2-419C-8D46-486B7114A27F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ECD2BED7-BDC2-419C-8D46-486B7114A27F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ECD2BED7-BDC2-419C-8D46-486B7114A27F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
