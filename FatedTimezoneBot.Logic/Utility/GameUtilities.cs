@@ -21,17 +21,17 @@ namespace FatedTimezoneBot.Logic.Utility
         public static string GetGearSource(GearItem item)
         {
             // It's a bit hacky to hard code this, but sufficient for now
-            if (item.itemLevel == 580)
+            if (item.itemLevel == 610)
             {
                 return Crafted;
             }
 
-            if (item.itemLevel == 590)
+            if (item.itemLevel == 620)
             {
                 return Tomes;
             }
 
-            if ((item.itemLevel >= 600) && (item.itemLevel <= 605))
+            if ((item.itemLevel >= 625) && (item.itemLevel <= 635))
             {
                 if (item.name.Contains("augmented", StringComparison.OrdinalIgnoreCase))
                 {
@@ -90,17 +90,17 @@ namespace FatedTimezoneBot.Logic.Utility
         public static Tuple<string, string> GetGearSourceAndType(GearItem item)
         {
             // It's a bit hacky to hard code this, but sufficient for now
-            if (item.itemLevel == 580)
+            if (item.itemLevel == 610)
             {
                 return new Tuple<string, string>(Crafted, Unknown);
             }
 
-            if (item.itemLevel == 590)
+            if (item.itemLevel == 620)
             {
                 return new Tuple<string, string>(Tomes, Unknown);
             }
 
-            if ((item.itemLevel >= 600) && (item.itemLevel <= 605))
+            if ((item.itemLevel >= 630) && (item.itemLevel <= 635))
             {
                 if (item.name.Contains("augmented", StringComparison.OrdinalIgnoreCase))
                 {
